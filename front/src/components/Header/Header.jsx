@@ -13,7 +13,7 @@ export const Header = () => {
             name="search"
             placeholder="search"
           ></input>
-          <NavLink to="/login">
+          <NavLink to="/auth">
             <button className="bg-black text-white rounded-full p-3">
               Sign in
             </button>
