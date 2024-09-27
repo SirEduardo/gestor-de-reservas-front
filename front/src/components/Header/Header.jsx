@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import Search from "../Search/Search";
 
 export const Header = () => {
   return (
@@ -6,13 +7,7 @@ export const Header = () => {
       <nav className="w-full">
         <ul className="w-full flex items-center justify-around font-semibold">
           <h3 className="text-xl">Gestor de Reservas Charras</h3>
-          <input
-            className="rounded-full px-8 py-2"
-            type="text"
-            id="search"
-            name="search"
-            placeholder="search"
-          ></input>
+          <Search />
           <NavLink to="/auth">
             <button className="bg-black text-white rounded-full p-3">
               Sign in
