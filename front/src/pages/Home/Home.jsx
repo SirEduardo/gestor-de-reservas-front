@@ -10,7 +10,6 @@ const Home = () => {
   const getRestaurants = async () => {
     const response = await fetch("http://localhost:3000/api/v1/restaurants");
     const res = await response.json();
-    console.log(res);
 
     setRestaurants(res);
   };
@@ -29,7 +28,7 @@ const Home = () => {
         <Search />
       </div>
 
-      <div className="flex flex-col justify-center items-center gap-5 mt-20">
+      <div className="flex flex-col justify-center items-center gap-5 mt-20 flex-wrap">
         <div className="flex gap-7">
           {Array.isArray(restaurants) ? (
             restaurants.map((res) => (
@@ -42,8 +41,8 @@ const Home = () => {
                   category={res.category}
                   average_rating={res.average_rating}
                   rating_number={res.rating_number}
-                  opening={res.schedule.opening}
-                  closing={res.schedule.closing}
+                  opening={res.opening}
+                  closing={res.closing}
                 />
               </Link>
             ))
