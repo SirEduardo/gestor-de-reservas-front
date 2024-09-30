@@ -17,7 +17,7 @@ const Home = () => {
 
   useEffect(() => {
     getRestaurants(restaurants);
-  }, []);
+  });
 
   return (
     <div className="w-svw h-svh bg-slate-100">
