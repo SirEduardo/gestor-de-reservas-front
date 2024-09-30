@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../utils/Hooks/useAuth";
 import { useState } from "react";
 import Login from "./Login";
+import StoreUserData from "../../utils/Functions/StoreUserData";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const {
@@ -11,18 +13,24 @@ const Register = () => {
   } = useForm();
   const { loading, error, authUser } = useAuth();
   const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
 
   const submit = async (formData) => {
-    const url = "http://localhost:3000/api/v1/users/register";
+    const registerUrl = "http://localhost:3000/api/v1/users/register";
+    const loginUrl = "http://localhost:3000/api/v1/users/login";
+
     try {
-      const res = await authUser(url, formData);
+      const registerRes = await authUser(registerUrl, formData);
 
       console.log(formData);
 
-      if (res) {
-        console.log("Registration successful", res);
+      if (registerRes) {
+        console.log("Registration successful", registerRes);
+        const loginResponse = await authUser(loginUrl, formData);
+        StoreUserData(loginResponse.user.userName, loginResponse.token);
+        navigate("/");
       } else {
-        console.log("Unexpected error", res);
+        console.log("Unexpected error", registerRes);
       }
     } catch (error) {
       console.error("Registration error", error);
