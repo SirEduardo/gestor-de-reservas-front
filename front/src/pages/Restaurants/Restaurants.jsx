@@ -44,7 +44,7 @@ const Restaurants = () => {
                 <h3 className="font-bold text-lg">Detalles</h3>
                 <div>
                   <h4 className="font-semibold">Horario</h4>
-                  {restaurant.schedule.opening}-{restaurant.schedule.closing}
+                  {restaurant.opening}-{restaurant.closing}
                 </div>
                 <div>
                   <h4 className="font-semibold">Comidas</h4>
