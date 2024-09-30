@@ -26,7 +26,7 @@ const Search = () => {
   return (
     <form onSubmit={getRestaurantByName} className="flex gap-2">
       <input
-        className="rounded-full px-8 py-2"
+        className="rounded-full px-8 py-2 border-solid border"
         type="text"
         id="search"
         name="search"
