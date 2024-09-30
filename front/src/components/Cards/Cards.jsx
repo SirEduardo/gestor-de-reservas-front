@@ -1,3 +1,5 @@
+import Rating from "../Rating/Rating";
+
 const capitalize = (str) => {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -27,7 +29,10 @@ const Cards = ({
       <div className=" flex flex-col gap-2 p-3">
         <h2 className="font-bold">{capitalize(name)}</h2>
         <p>
-          {average_rating} {rating_number}
+          <Rating
+            average_rating={average_rating}
+            rating_number={rating_number}
+          />
         </p>
         <p>{capitalize(category)}</p>
         <p>{capitalize(location)}</p>
