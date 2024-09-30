@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../utils/Hooks/useAuth";
 import { useState } from "react";
 import Register from "./Register";
+import StoreUserData from "../../utils/Functions/StoreUserData";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -11,14 +13,17 @@ const Login = () => {
   } = useForm();
   const { loading, error, authUser } = useAuth();
   const [isRegister, setIsRegister] = useState(false);
+  const navigate = useNavigate();
 
   const submit = async (formData) => {
     const url = "http://localhost:3000/api/v1/users/login";
     try {
       const res = await authUser(url, formData);
-      console.log(formData);
+      console.log(res);
       if (res) {
-        alert("Login successful", res.userName);
+        console.log("Login successful", res.user.userName);
+        StoreUserData(res.user.userName, res.user.role, res.token);
+        navigate("/");
       } else {
         alert("Unexpected error", res);
       }
@@ -37,27 +42,6 @@ const Login = () => {
         onSubmit={handleSubmit(submit)}
         className="bg-white p-8 shadow-lg rounded-md w-full max-w-md"
       >
-        <div className="mb-4">
-          <label htmlFor="userName">Username</label>
-          <input
-            type="text"
-            {...register("userName", {
-              required: true,
-              message: "Enter a username",
-            })}
-            id="userName"
-            className={`w-full p-1 border ${
-              errors.userName ? "border-red-500" : "border-gray-300"
-            } rounded-md focus:ring-2 ${
-              errors.userName ? "focus:ring-red-500" : "focus:ring-blue-500"
-            }`}
-          />
-          {errors.userName && (
-            <span className="text-red-500 text-sm">
-              {errors.userName.message}
-            </span>
-          )}
-        </div>
         <div className="mb-4">
           <label htmlFor="email">Email</label>
           <input
