@@ -19,7 +19,7 @@ const Home = () => {
   });
 
   return (
-    <div className="w-svw h-svh bg-slate-100">
+    <div className="w-screen h-screen bg-slate-100">
       <Header />
       <div className="flex flex-col items-center gap-4">
         <h1 className="font-bold text-4xl mt-10 pl-4">
@@ -28,22 +28,24 @@ const Home = () => {
         <Search />
       </div>
 
-      <div className="flex flex-col justify-center items-center gap-5 mt-20 flex-wrap">
-        <div className="flex gap-7">
+      <div className="flex flex-col justify-center items-center gap-5 mt-20">
+        <div className="flex flex-wrap justify-center gap-5">
           {Array.isArray(restaurants) ? (
             restaurants.map((res) => (
               <Link key={res._id} to={`/restaurants/${res._id}`}>
-                <Cards
-                  key={res._id}
-                  name={res.name}
-                  id={res._id}
-                  img={res.img}
-                  category={res.category}
-                  average_rating={res.average_rating}
-                  rating_number={res.rating_number}
-                  opening={res.opening}
-                  closing={res.closing}
-                />
+                <div className="w-64 h-80 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                  <Cards
+                    key={res._id}
+                    name={res.name}
+                    id={res._id}
+                    img={res.img}
+                    category={res.category}
+                    average_rating={res.average_rating}
+                    rating_number={res.rating_number}
+                    opening={res.opening}
+                    closing={res.closing}
+                  />
+                </div>
               </Link>
             ))
           ) : (
