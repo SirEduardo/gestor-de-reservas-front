@@ -1,1 +1,1 @@
-export const API_URL = "http://localhost:3000/api/v1";
+export const API_URL = "https://bootcamp-project-13-back.vercel.app/api/v1";
