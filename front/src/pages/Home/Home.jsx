@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Cards from "../../components/Cards/Cards";
 import SearchByName from "../../components/Search/SearchByName";
 import SearchByCategory from "../../components/Search/SearchByCategory";
+import axios from "axios";
+import { API_URL } from "../../utils/Functions/api/api";
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -12,13 +14,11 @@ const Home = () => {
 
   const getRestaurants = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/restaurants");
-      if (!response.ok) {
-        throw new Error("Error fetching restaurants");
-      }
-      const res = await response.json();
+      const response = await axios.get(`${API_URL}/restaurants`);
+      const res = response.data;
       setRestaurants(res);
       setAllRestaurants(res);
+
       const uniqueCategories = Array.from(
         new Set(res.map((restaurant) => restaurant.category))
       );
