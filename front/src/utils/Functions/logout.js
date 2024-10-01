@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-const navigate = useNavigate;
 export const logout = () => {
   const confirmation = confirm("sure you want to logout");
   if (confirmation) {
@@ -7,5 +5,4 @@ export const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
   }
-  navigate("/");
 };
