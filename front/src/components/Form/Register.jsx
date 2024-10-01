@@ -5,6 +5,7 @@ import Login from "./Login";
 import StoreUserData from "../../utils/Functions/StoreUserData";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../Header/Header";
+import { API_URL } from "../../utils/Functions/api/api";
 
 const Register = () => {
   const {
@@ -17,8 +18,8 @@ const Register = () => {
   const navigate = useNavigate();
 
   const submit = async (formData) => {
-    const registerUrl = "http://localhost:3000/api/v1/users/register";
-    const loginUrl = "http://localhost:3000/api/v1/users/login";
+    const registerUrl = `${API_URL}/users/register`;
+    const loginUrl = `${API_URL}/users/login`;
 
     try {
       const registerRes = await authUser(registerUrl, formData);
@@ -28,10 +29,13 @@ const Register = () => {
       if (registerRes) {
         console.log("Registration successful", registerRes);
         const loginResponse = await authUser(loginUrl, formData);
-        StoreUserData(loginResponse.user.userName, loginResponse.token);
+        StoreUserData(
+          loginResponse.user.userName,
+          loginResponse.user.role,
+          loginResponse.user._id,
+          loginResponse.token
+        );
         navigate("/");
-      } else {
-        console.log("Unexpected error", registerRes);
       }
     } catch (error) {
       console.error("Registration error", error);
