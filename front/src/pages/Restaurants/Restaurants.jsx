@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../../components/Rating/Rating";
 import { Header } from "../../components/Header/Header";
+import axios from "axios";
+import ShowComments from "../../components/showComments/ShowComments";
 
 const Restaurants = () => {
   const { id } = useParams();
@@ -10,10 +12,10 @@ const Restaurants = () => {
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           `http://localhost:3000/api/v1/restaurants/${id}`
         );
-        const res = await response.json();
+        const res = response.data;
         console.log(res);
 
         setRestaurant(res);
@@ -71,12 +73,13 @@ const Restaurants = () => {
               </section>
               <div className="bg-white p-5 rounded-lg">
                 <h4 className="font-bold text-xl pb-10">Contribuye!</h4>
-                <Link to="/comments">
+                <Link to={`/comments/${id}`}>
                   <button className="bg-black text-white px-5 py-3 rounded-full font-bold">
                     Escribe un comentario
                   </button>
                 </Link>
               </div>
+              <ShowComments id={id} />
             </div>
           ) : (
             <p>No hay restaurantes disponibles</p>
