@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 const useAuth = () => {
@@ -9,20 +10,14 @@ const useAuth = () => {
     setError(null);
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
+      const response = await axios.post(url, formData, {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error("Something went wrong");
-      }
-      const result = await response.json();
       setLoading(false);
-      return result;
+      return response.data;
     } catch (error) {
       setError(error.message, "Could not Register the user");
       setLoading(false);
