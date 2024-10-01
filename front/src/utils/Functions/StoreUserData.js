@@ -1,9 +1,12 @@
-const StoreUserData = (user, role, token) => {
+const StoreUserData = (user, role, id, token) => {
   if (user) {
     localStorage.setItem("user", user);
   }
   if (role) {
     localStorage.setItem("role", role);
+  }
+  if (id) {
+    localStorage.setItem("id", id);
   }
   if (token) {
     localStorage.setItem("token", token);
