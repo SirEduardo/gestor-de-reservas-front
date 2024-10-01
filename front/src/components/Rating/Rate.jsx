@@ -1,16 +1,15 @@
 import { useState } from "react";
 
-const Rate = ({ maxRating = 5, onChange }) => {
-  const [rating, setRating] = useState(0);
+const Rate = ({ maxRating = 5, setRating }) => {
   const [hover, setHover] = useState(0);
+  const [rating, setRatingLocal] = useState(0);
 
   const handleRating = (value) => {
     setRating(value);
+    setRatingLocal(value);
     setHover(value);
-    if (onChange) {
-      onChange(value);
-    }
   };
+
   return (
     <div className="flex flex-col items-center space-y-4">
       <h2 className="text-2xl font-semibold text-gray-800">
