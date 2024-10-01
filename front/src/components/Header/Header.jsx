@@ -14,11 +14,12 @@ export const Header = () => {
     <header className="h-24 flex items-center justify-center border-b-2">
       <nav className="w-full">
         <ul className="w-full flex items-center justify-around font-semibold">
-          <h3 className="text-xl">Gestor de Reservas Charras</h3>
+          <NavLink to="/">
+            <h3 className="text-xl">TripAdvisor</h3>
+          </NavLink>
           {user ? (
             <div className="flex items-center justify-evenly w-1/4">
               <span>Bienvenido, {user}</span>
-
               <NavLink
                 to={role === "admin" ? "/myRestaurant" : "/myReservations"}
               >
