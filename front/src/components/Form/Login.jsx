@@ -4,6 +4,7 @@ import { useState } from "react";
 import Register from "./Register";
 import StoreUserData from "../../utils/Functions/StoreUserData";
 import { useNavigate } from "react-router-dom";
+import { Header } from "../Header/Header";
 
 const Login = () => {
   const {
@@ -37,74 +38,87 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-svh bg-slate-200">
-      <form
-        onSubmit={handleSubmit(submit)}
-        className="bg-white p-8 shadow-lg rounded-md w-full max-w-md"
-      >
-        <div className="mb-4">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            {...register("email", {
-              required: true,
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Please enter a valid email address",
-              },
-            })}
-            id="email"
-            className={`w-full p-1 border ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            } rounded-md focus:ring-2 ${
-              errors.email ? "focus:ring-red-500" : "focus:ring-blue-500"
-            }`}
-          />
-          {errors.email && (
-            <span className="text-red-500 text-sm">{errors.email.message}</span>
-          )}
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            {...register("password", {
-              required: true,
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]+$/,
-                message:
-                  "The password must include numbers, upper and lower case letters.",
-              },
-            })}
-            id="password"
-            className={`w-full p-1 border ${
-              errors.password ? "border-red-500" : "border-gray-300"
-            } rounded-md focus:ring-2 ${
-              errors.password ? "focus:ring-red-500" : "focus:ring-blue-500"
-            }`}
-          />
-          {errors.password && (
-            <span className="text-red-500 text-sm">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+    <div>
+      <Header />
+      <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-b from-slate-100 to-slate-200 p-4">
+        <form
+          onSubmit={handleSubmit(submit)}
+          className="bg-white shadow-xl rounded-lg p-8 space-y-6"
         >
-          {loading ? "Login in..." : "Login"}
-        </button>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-      </form>
-      <p className="mt-4 text-center">Not registered yet?</p>
-      <button
-        className="text-blue-500 hover:underline"
-        type="button"
-        onClick={() => setIsRegister(true)}
-      >
-        Register
-      </button>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Welcome back
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Enter your email to sign in to your account
+          </p>
+          <div className="space-y-2">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              {...register("email", {
+                required: true,
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email address",
+                },
+              })}
+              id="email"
+              className={`w-full p-1 border ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } rounded-md focus:ring-2 ${
+                errors.email ? "focus:ring-red-500" : "focus:ring-blue-500"
+              }`}
+            />
+            {errors.email && (
+              <span className="text-red-500 text-sm">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              {...register("password", {
+                required: true,
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]+$/,
+                  message:
+                    "The password must include numbers, upper and lower case letters.",
+                },
+              })}
+              id="password"
+              className={`w-full p-1 border ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } rounded-md focus:ring-2 ${
+                errors.password ? "focus:ring-red-500" : "focus:ring-blue-500"
+              }`}
+            />
+            {errors.password && (
+              <span className="text-red-500 text-sm">
+                {errors.password.message}
+              </span>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+          >
+            {loading ? "Login in..." : "Login"}
+          </button>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+        </form>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-muted-foreground">Not registered yet?</p>
+          <button
+            className="text-blue-500 hover:text-blue-700"
+            type="button"
+            onClick={() => setIsRegister(true)}
+          >
+            Register
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
