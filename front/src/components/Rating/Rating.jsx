@@ -32,7 +32,7 @@ const Rating = ({ average_rating, rating_number }) => {
     <div className="flex gap-1 items-center">
       <div className="text-xl font-bold">{formattedRating}</div>
       <div className="flex ">{circles}</div>
-      <div>{rating_number} opiniones</div>
+      <div className="text-sm">{rating_number} opiniones</div>
     </div>
   );
 };
