@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Auth from "./pages/Login/auth";
 import Restaurants from "./pages/Restaurants/Restaurants";
 import MyRestaurant from "./pages/MyRestaurant/MyRestaurant";
 import MyReservations from "./pages/MyReservations/MyReservations";
 import Comments from "./pages/Comments/Comments";
+import Auth from "./pages/SingIn/Auth";
 
 function App() {
   return (
