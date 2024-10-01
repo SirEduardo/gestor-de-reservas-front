@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../../utils/Functions/api/api";
 
 const SearchByName = ({ setRestaurants }) => {
   const [search, setSearch] = useState("");
@@ -17,12 +19,9 @@ const SearchByName = ({ setRestaurants }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/restaurants`);
-      if (!response.ok) {
-        throw new Error("Error en la búsqueda de restaurantes");
-      }
+      const response = await axios.get(`${API_URL}/restaurants`);
 
-      const res = await response.json();
+      const res = response.data;
 
       const filtered = res.filter((restaurant) => {
         const matchesName = restaurant.name
