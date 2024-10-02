@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { logout } from "../../utils/Functions/logout";
 
@@ -7,11 +7,13 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = localStorage.getItem("user");
   const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleLogout = () => {
     logout();
+    navigate("/");
     window.location.reload();
   };
 
@@ -42,14 +44,14 @@ export const Header = () => {
                 <li className="text-sm md:text-base font-semibold">
                   Bienvenido, {user}
                 </li>
-                {/*              <li>
+                <li>
                   <NavLink
                     to={role === "admin" ? "/myRestaurant" : "/myReservations"}
                     className="bg-black hover:bg-gray-900 text-white rounded-full py-2 px-4 text-sm md:text-base font-semibold"
                   >
                     {role === "admin" ? "Mi Restaurante" : "Mis Reservas"}
                   </NavLink>
-                </li>*/}
+                </li>
                 <li>
                   <button
                     onClick={handleLogout}
