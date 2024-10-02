@@ -5,6 +5,7 @@ import { Header } from "../../components/Header/Header";
 import axios from "axios";
 import ShowComments from "../../components/showComments/ShowComments";
 import { Star, MapPin, Phone, Clock } from "lucide-react";
+import { API_URL } from "../../utils/Functions/api/api";
 
 const Restaurants = () => {
   const { id } = useParams();
@@ -13,9 +14,7 @@ const Restaurants = () => {
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/restaurants/${id}`
-        );
+        const response = await axios.get(`${API_URL}/restaurants/${id}`);
         const res = response.data;
         console.log(res);
 
