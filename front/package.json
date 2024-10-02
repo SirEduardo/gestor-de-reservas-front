@@ -16,7 +16,8 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.2",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "vercel": "^35.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
