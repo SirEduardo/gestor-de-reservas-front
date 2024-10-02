@@ -105,7 +105,7 @@ const Restaurants = () => {
                   </button>
                 </Link>
               </div>
-              <div className="mt-8">
+              <div>
                 <ShowComments id={id} />
               </div>
             </div>
