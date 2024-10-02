@@ -26,7 +26,14 @@ const SearchByName = ({ setRestaurants }) => {
       const filtered = res.filter((restaurant) => {
         const matchesName = restaurant.name
           .toLowerCase()
-          .includes(search.toLowerCase());
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .includes(
+            search
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+          );
         return matchesName;
       });
       console.log(filtered);
