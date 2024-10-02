@@ -42,14 +42,14 @@ export const Header = () => {
                 <li className="text-sm md:text-base font-semibold">
                   Bienvenido, {user}
                 </li>
-                <li>
+                {/*              <li>
                   <NavLink
                     to={role === "admin" ? "/myRestaurant" : "/myReservations"}
                     className="bg-black hover:bg-gray-900 text-white rounded-full py-2 px-4 text-sm md:text-base font-semibold"
                   >
                     {role === "admin" ? "Mi Restaurante" : "Mis Reservas"}
                   </NavLink>
-                </li>
+                </li>*/}
                 <li>
                   <button
                     onClick={handleLogout}
