@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const Rate = ({ maxRating = 5, setRating }) => {
+const Rate = ({ maxRating = 5, setRating, initialRating = 0 }) => {
   const [hover, setHover] = useState(0);
-  const [rating, setRatingLocal] = useState(0);
+  const [rating, setRatingLocal] = useState(initialRating);
 
   const handleRating = (value) => {
     setRating(value);
