@@ -31,8 +31,6 @@ const Login = () => {
           res.token
         );
         navigate("/");
-      } else {
-        alert("Usuario o contraseña incorrecta", res);
       }
     } catch (error) {
       console.log("Login error", error);
@@ -112,7 +110,9 @@ const Login = () => {
           >
             {loading ? "Login in..." : "Login"}
           </button>
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-center text-sm mt-2">{error}</p>
+          )}
         </form>
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">Not registered yet?</p>
