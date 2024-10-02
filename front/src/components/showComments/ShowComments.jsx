@@ -48,6 +48,11 @@ const ShowComments = () => {
                     <h3 className="font-semibold text-lg">
                       {comment.user?.userName || "Usuario desconocido"}
                     </h3>
+                    <Rating
+                      average_rating={comment.rating}
+                      showFormattedRating={false}
+                      showRatingNumber={false}
+                    />
                     <p className="text-sm text-gray-500">
                       {new Date(comment.creation_date).toLocaleDateString(
                         undefined,
@@ -60,11 +65,6 @@ const ShowComments = () => {
                     </p>
                   </div>
                 </div>
-                <Rating
-                  average_rating={comment.rating}
-                  showFormattedRating={false}
-                  showRatingNumber={false}
-                />
               </div>
               <p className="text-gray-700 mt-2">{comment.text}</p>
             </div>
