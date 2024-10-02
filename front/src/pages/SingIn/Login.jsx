@@ -3,7 +3,6 @@ import useAuth from "../../utils/Hooks/useAuth";
 import { useState } from "react";
 import Register from "./Register";
 import { useNavigate } from "react-router-dom";
-
 import { API_URL } from "../../utils/Functions/api/api";
 import StoreUserData from "../../utils/Functions/StoreUserData";
 import { Header } from "../../components/Header/Header";
