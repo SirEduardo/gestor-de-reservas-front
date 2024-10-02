@@ -39,7 +39,7 @@ export const Header = () => {
                 </button>
               </div>
             ) : (
-              <NavLink to="/auth">
+              <NavLink to="/signin">
                 <button className="bg-black text-white rounded-full p-3">
                   Iniciar sesion
                 </button>
