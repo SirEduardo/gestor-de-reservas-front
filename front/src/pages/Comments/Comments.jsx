@@ -42,7 +42,7 @@ const Comments = () => {
       console.log("Respuesta del servidor:", response);
 
       if (!token) {
-        console.error("Debes estar registrado");
+        setError("Debes estar registrado");
       } else {
         console.log("Comment posted successfully:", response.data);
         setInput("");
