@@ -32,7 +32,7 @@ const Login = () => {
         );
         navigate("/");
       } else {
-        alert("Unexpected error", res);
+        alert("Usuario o contraseña incorrecta", res);
       }
     } catch (error) {
       console.log("Login error", error);
