@@ -34,13 +34,15 @@ const Rating = ({
   });
 
   return (
-    <div className="flex gap-1 items-center">
-      {showFormattedRating && (
-        <div className="text-xl font-bold">{formattedRating}</div>
-      )}
-      <div className="flex ">{circles}</div>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        {showFormattedRating && (
+          <div className="text-xl font-bold">{formattedRating}</div>
+        )}
+        <div className="flex items-center">{circles}</div>
+      </div>
       {showRatingNumber && (
-        <div className="text-sm">{rating_number} opiniones</div>
+        <div className="text-base">{rating_number} opiniones</div>
       )}
     </div>
   );
