@@ -41,13 +41,13 @@ const Comments = () => {
       );
       console.log("Respuesta del servidor:", response);
 
-      if (token) {
+      if (!token) {
+        console.error("Debes estar registrado");
+      } else {
         console.log("Comment posted successfully:", response.data);
         setInput("");
         setRating(0);
         setError(null);
-      } else {
-        console.error("Debes estar registrado");
       }
     } catch (error) {
       console.error("Error posting comment:", error.response.data);
