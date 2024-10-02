@@ -12,18 +12,32 @@ const useAuth = () => {
     try {
       const response = await axios.post(url, formData, {
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
       });
 
       setLoading(false);
       return response.data;
     } catch (error) {
-      setError(error.message, "Could not Register the user");
+      if (error.response) {
+        if (error.response.status === 404) {
+          setError("Usuario no encontrado.");
+        } else if (error.response.status === 400) {
+          setError(error.response.data || "Usuario o contraseña incorrectos.");
+        } else {
+          setError("Error. Porfavor, intentelo de nuevo");
+        }
+      } else if (error.request) {
+        setError("Network error. Please check your internet connection.");
+      } else {
+        setError("Error: " + error.message);
+      }
+
       setLoading(false);
       return undefined;
     }
   };
+
   return { loading, error, authUser };
 };
 
