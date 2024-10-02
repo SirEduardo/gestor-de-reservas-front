@@ -3,13 +3,14 @@ import { Header } from "../../components/Header/Header";
 import Rate from "../../components/Rating/Rate";
 import axios from "axios";
 import { API_URL } from "../../utils/Functions/api/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Comments = () => {
   const { id } = useParams();
   const [input, setInput] = useState("");
   const [rating, setRating] = useState(0);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,6 +45,7 @@ const Comments = () => {
       setInput("");
       setRating(0);
       setError(null);
+      navigate(`/restaurants/${id}`);
     } catch (error) {
       console.error("Error posting comment:", error.response.data);
       setError("Debes estar registrado");
