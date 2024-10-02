@@ -29,11 +29,13 @@ const Restaurants = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-100">
       <Header />
-      <div className="flex-grow flex justify-center py-14">
-        <div className="w-2/4 max-w-4xl">
+      <div className="flex-grow flex justify-center py-14 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-7xl">
           {restaurant ? (
             <div className="flex flex-col gap-5">
-              <h1 className="font-bold text-3xl">{restaurant.name}</h1>
+              <h1 className="font-bold text-2xl sm:text-3xl">
+                {restaurant.name}
+              </h1>
               <div>
                 <img
                   className="rounded-xl w-full h-auto"
