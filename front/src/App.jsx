@@ -4,14 +4,14 @@ import Restaurants from "./pages/Restaurants/Restaurants";
 import MyRestaurant from "./pages/MyRestaurant/MyRestaurant";
 import MyReservations from "./pages/MyReservations/MyReservations";
 import Comments from "./pages/Comments/Comments";
-import Auth from "./pages/SingIn/Auth";
+import Register from "./pages/SingIn/Register";
 
 function App() {
   return (
     <div className="h-svh">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/signin" element={<Register />} />
         <Route path="/restaurants/:id" element={<Restaurants />} />
         <Route path="/myRestaurant" element={<MyRestaurant />} />
         <Route path="/myReservations" element={<MyReservations />} />
