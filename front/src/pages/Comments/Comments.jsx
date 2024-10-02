@@ -41,10 +41,14 @@ const Comments = () => {
       );
       console.log("Respuesta del servidor:", response);
 
-      console.log("Comment posted successfully:", response.data);
-      setInput("");
-      setRating(0);
-      setError(null);
+      if (token) {
+        console.log("Comment posted successfully:", response.data);
+        setInput("");
+        setRating(0);
+        setError(null);
+      } else {
+        console.error("Debes estar registrado");
+      }
     } catch (error) {
       console.error("Error posting comment:", error.response.data);
       setError("Error en la respuesta del servidor.");
