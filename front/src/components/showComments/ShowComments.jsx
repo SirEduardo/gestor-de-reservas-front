@@ -14,7 +14,6 @@ const ShowComments = () => {
         const response = await axios.get(`${API_URL}/comments/${id}`);
         const res = response.data;
         setComments(res);
-        console.log(res);
       } catch (error) {
         console.error("Error recogiendo comentarios", error);
       }
