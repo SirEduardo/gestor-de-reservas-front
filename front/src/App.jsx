@@ -3,8 +3,9 @@ import Home from "./pages/Home/Home";
 import Restaurants from "./pages/Restaurants/Restaurants";
 import MyRestaurant from "./pages/MyRestaurant/MyRestaurant";
 import MyReservations from "./pages/MyReservations/MyReservations";
-import Comments from "./pages/Comments/Comments";
+import Comments from "./components/CreateComments/Comments";
 import Register from "./pages/SingIn/Register";
+import CreateReservation from "./components/CreateReservation/CreateReservation";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/myRestaurant" element={<MyRestaurant />} />
         <Route path="/myReservations" element={<MyReservations />} />
         <Route path="/comments/:id" element={<Comments />} />
+        <Route path="/createReservation/:id" element={<CreateReservation />} />
       </Routes>
     </div>
   );
