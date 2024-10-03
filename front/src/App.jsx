@@ -3,9 +3,9 @@ import Home from "./pages/Home/Home";
 import Restaurants from "./pages/Restaurants/Restaurants";
 import MyRestaurant from "./pages/MyRestaurant/MyRestaurant";
 import MyReservations from "./pages/MyReservations/MyReservations";
-import Comments from "./components/CreateComments/Comments";
+import Comments from "./components/Create/CreateComments/Comments";
 import Register from "./pages/SingIn/Register";
-import CreateReservation from "./components/CreateReservation/CreateReservation";
+import CreateReservation from "./components/Create/CreateReservation/CreateReservation";
 
 function App() {
   return (
