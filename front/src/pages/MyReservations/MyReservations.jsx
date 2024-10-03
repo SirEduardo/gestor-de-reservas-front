@@ -3,6 +3,7 @@ import { CalendarDays, Clock, MapPin, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../utils/Functions/api/api";
 import { Header } from "../../components/Header/Header";
+import CancelReservation from "../../components/Delete/CancelReservation";
 const MyReservations = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -101,6 +102,7 @@ const MyReservations = () => {
                 </div>
                 {reservation.state !== "cancelled" && (
                   <button
+                    onClick={() => CancelReservation(reservation._id)}
                     className="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
                     aria-label={`Cancelar reserva en ${reservation.restaurant}`}
                   >
