@@ -10,21 +10,36 @@ import { API_URL } from "../../utils/Functions/api/api";
 const Restaurants = () => {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState(null);
+  const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const response = await axios.get(`${API_URL}/restaurants/${id}`);
-        const res = response.data;
-        console.log(res);
+        const response = await axios.get(`${API_URL}/restaurants`);
+        const allRestaurants = response.data;
 
-        setRestaurant(res);
+        const foundRestaurant = allRestaurants.find((rest) => rest._id === id);
+
+        setRestaurants(allRestaurants);
+        setRestaurant(foundRestaurant);
       } catch (error) {
         console.log("Error recogiendo el restaurante del fetch", error);
       }
     };
     fetchRestaurant();
   }, [id]);
+
+  const findIndex = () => {
+    const itemsSorted = [...restaurants].sort(
+      (a, b) => b.average_rating - a.average_rating
+    );
+    const indexRestaurant = itemsSorted.findIndex(
+      (item) => item._id === restaurant._id
+    );
+    const restaurantPosition = indexRestaurant + 1;
+
+    return restaurantPosition;
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-100">
@@ -51,6 +66,10 @@ const Restaurants = () => {
                     average_rating={restaurant.average_rating}
                     rating_number={restaurant.rating_number}
                   />
+                  <div className="flex gap-2">
+                    <p className="font-bold">N.º {findIndex()} </p>
+                    <p>de {restaurants.length} restaurantes</p>
+                  </div>
                 </div>
                 <div className="flex flex-col w-full bg-white p-6 rounded-lg border gap-3">
                   <h3 className="font-bold text-lg">Detalles</h3>
@@ -98,13 +117,23 @@ const Restaurants = () => {
                   </div>
                 </div>
               </section>
-              <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-                <h4 className="font-bold text-lg mb-4">Contribuye!</h4>
-                <Link to={`/comments/${id}`}>
-                  <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors">
-                    Escribe un comentario
-                  </button>
-                </Link>
+              <div className="bg-white p-6 rounded-lg shadow-sm mb-8 flex justify-between">
+                <div>
+                  <h4 className="font-bold text-lg mb-4">Contribuye!</h4>
+                  <Link to={`/comments/${id}`}>
+                    <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors">
+                      Escribe un comentario
+                    </button>
+                  </Link>
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg mb-4">Haz tu reserva!</h4>
+                  <Link to={`/createReservation/${id}`}>
+                    <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors">
+                      Reserva ahora
+                    </button>
+                  </Link>
+                </div>
               </div>
               <div>
                 <ShowComments id={id} />
