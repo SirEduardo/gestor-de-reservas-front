@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { Link } from "react-router-dom";
-import Cards from "../../components/Cards/Cards";
+import Cards from "../../components/Create/Cards/Cards";
 import SearchByName from "../../components/Search/SearchByName";
 import SearchByCategory from "../../components/Search/SearchByCategory";
 import axios from "axios";
