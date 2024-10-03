@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { CalendarIcon, ClockIcon, UsersIcon } from "lucide-react";
 
-import { Header } from "../../components/Header/Header";
+import { Header } from "../Header/Header";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../utils/Functions/api/api";
@@ -26,19 +26,21 @@ const CreateReservation = () => {
       time: data.time,
       n_persons: data.n_persons,
     };
-    const response = await axios.post(
-      `${API_URL}/reservations/${id}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const res = response.data;
-    if (res) {
-      console.log("reserva realizada con exito", res);
+    try {
+      const response = await axios.post(
+        `${API_URL}/reservations/${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const res = response.data;
+      console.log("Reserva realizada con éxito:", res);
       navigate("/");
+    } catch (error) {
+      console.log("Error al realizar la reserva:", error);
     }
   };
 
