@@ -11,9 +11,11 @@ const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getRestaurants = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${API_URL}/restaurants`);
       const res = response.data;
       setRestaurants(res);
@@ -23,8 +25,10 @@ const Home = () => {
         new Set(res.map((restaurant) => restaurant.category))
       );
       setCategories(uniqueCategories);
+      setLoading(false);
     } catch (error) {
       console.error("Failed to fetch restaurants:", error);
+      setLoading(false);
     }
   };
 
@@ -80,7 +84,7 @@ const Home = () => {
             </div>
           ) : (
             <p className="text-center text-gray-600 text-xl">
-              No hay restaurantes disponibles
+              {loading ? "Cargando..." : "No hay restaurantes disponibles"}
             </p>
           )}
         </div>
