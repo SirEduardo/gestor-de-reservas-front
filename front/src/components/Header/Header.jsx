@@ -44,12 +44,12 @@ export const Header = () => {
                   Bienvenido, {user}
                 </li>
                 <li>
-                  {/*<NavLink
+                  <NavLink
                     to={role === "admin" ? "/myRestaurant" : "/myReservations"}
                     className="bg-black hover:bg-gray-900 text-white rounded-full py-2 px-4 text-sm md:text-base font-semibold"
                   >
                     {role === "admin" ? "Mi Restaurante" : "Mis Reservas"}
-                  </NavLink>*/}
+                  </NavLink>
                 </li>
                 <li>
                   <button
