@@ -11,8 +11,10 @@ const Restaurants = () => {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchRestaurant = async () => {
       try {
         const response = await axios.get(`${API_URL}/restaurants`);
@@ -22,8 +24,10 @@ const Restaurants = () => {
 
         setRestaurants(allRestaurants);
         setRestaurant(foundRestaurant);
+        setLoading(false);
       } catch (error) {
         console.log("Error recogiendo el restaurante del fetch", error);
+        setLoading(false);
       }
     };
     fetchRestaurant();
@@ -140,7 +144,9 @@ const Restaurants = () => {
               </div>
             </div>
           ) : (
-            <p>No hay restaurantes disponibles</p>
+            <p className="text-center">
+              {loading ? "Cargando..." : "No hay restaurantes disponibles"}
+            </p>
           )}
         </div>
       </div>
