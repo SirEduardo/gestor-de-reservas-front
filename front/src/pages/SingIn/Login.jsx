@@ -79,7 +79,7 @@ const Login = () => {
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Contraseña</label>
             <input
               type="password"
               {...register("password", {
