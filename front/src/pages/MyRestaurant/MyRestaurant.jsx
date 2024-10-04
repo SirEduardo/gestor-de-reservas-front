@@ -86,7 +86,7 @@ const MyRestaurant = () => {
           {!restaurant && (
             <button
               onClick={() => setModal(!modal)}
-              className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors"
+              className="bg-black text-white px-6 py-3 rounded-full font-bold transition-colors"
             >
               Crea tu restaurante
             </button>
@@ -106,17 +106,17 @@ const MyRestaurant = () => {
           </div>
         ) : restaurant ? (
           <div className="flex flex-col gap-10">
-            <div className="flex flex-row justify-evenly">
+            <div className="flex flex-col lg:flex-row justify-evenly">
               <div
                 key={restaurant._id}
-                className="bg-white overflow-hidden shadow-lg rounded-lg"
+                className="bg-white overflow-hidden shadow-lg rounded-lg w-full lg:w-1/3"
               >
                 <div className="px-4 py-5 sm:p-6 flex flex-col gap-4">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     {restaurant.name}
                   </h3>
                   <img
-                    className="rounded-lg w-96"
+                    className="rounded-lg w-full h-auto"
                     src={restaurant.img}
                     alt={`${restaurant.name} image`}
                   />
@@ -144,7 +144,7 @@ const MyRestaurant = () => {
                 {reservations.length > 0 ? (
                   reservations.map((reserve) => (
                     <div
-                      className="flex gap-5 border-b border-gray-300 py-4"
+                      className="flex flex-col lg:flex-row gap-5 border-b border-gray-300 py-4"
                       key={reserve._id}
                     >
                       <div className="flex flex-col items-center flex-1">
@@ -213,7 +213,7 @@ const MyRestaurant = () => {
                 )}
               </div>
             </div>
-            <div className="w-3/4 m-auto">
+            <div className="w-full lg:w-3/4 m-auto">
               <ShowComments id={restaurant._id} />
             </div>
           </div>
