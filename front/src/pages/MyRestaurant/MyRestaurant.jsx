@@ -4,10 +4,12 @@ import RestaurantModal from "../../components/RestaurantModal/RestaurantModal";
 import { AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { API_URL } from "../../utils/Functions/api/api";
+import ReservationCard from "../../components/Create/ReservationCard/ReservationCard";
 
 const MyRestaurant = () => {
   const [modal, setModal] = useState(false);
   const [restaurant, setRestaurant] = useState(null);
+  const [reservations, setReservations] = useState([]);
 
   const getUserData = async () => {
     const token = localStorage.getItem("token");
@@ -31,6 +33,13 @@ const MyRestaurant = () => {
         `${API_URL}/restaurants/${restaurantId}`
       );
       setRestaurant(restaurantResponse.data);
+
+      const reservationsResponse = await axios.get(
+        `${API_URL}/reservations/restaurant/${restaurantId}`
+      );
+      setReservations(reservationsResponse.data.reservations);
+
+      console.log(reservationsResponse.data.reservations);
       console.log(restaurantResponse.data);
     } catch (error) {
       console.log("Error fetching user data", error);
@@ -75,6 +84,7 @@ const MyRestaurant = () => {
                 <p className="text-sm text-gray-500">{restaurant.location}</p>
               </div>
             </div>
+            <ReservationCard reservations={reservations} />
           </div>
         ) : (
           <div className="text-center">
