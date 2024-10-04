@@ -62,7 +62,7 @@ const Restaurants = () => {
                 ></img>
               </div>
               <section className="flex flex-col md:flex-row justify-between gap-5">
-                <div className="flex flex-col w-full p-6 bg-white rounded-lg border gap-3">
+                <div className="flex flex-col w-full p-6 bg-white rounded-lg border gap-3 shadow-md">
                   <h3 className="font-bold text-lg">
                     Puntuaciones y opiniones
                   </h3>
@@ -75,7 +75,7 @@ const Restaurants = () => {
                     <p>de {restaurants.length} restaurantes</p>
                   </div>
                 </div>
-                <div className="flex flex-col w-full bg-white p-6 rounded-lg border gap-3">
+                <div className="flex flex-col w-full bg-white p-6 rounded-lg border gap-3 shadow-md">
                   <h3 className="font-bold text-lg">Detalles</h3>
                   <div className="space-y-2">
                     <div className="flex items-start space-x-2">
@@ -101,7 +101,7 @@ const Restaurants = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col w-full bg-white p-6 rounded-lg border  gap-3">
+                <div className="flex flex-col w-full bg-white p-6 rounded-lg border  gap-3 shadow-md">
                   <h3 className="font-bold text-lg">Ubicacion y contacto</h3>
                   <div className="space-y-2">
                     <div className="flex items-start space-x-2">
@@ -121,7 +121,7 @@ const Restaurants = () => {
                   </div>
                 </div>
               </section>
-              <div className="bg-white p-6 rounded-lg shadow-sm mb-8 flex justify-between">
+              <div className="bg-white p-6 rounded-lg mb-8 flex justify-between shadow-md">
                 <div>
                   <h4 className="font-bold text-lg mb-4">Contribuye!</h4>
                   <Link to={`/comments/${id}`}>
@@ -140,7 +140,7 @@ const Restaurants = () => {
                 </div>
               </div>
               <div>
-                <ShowComments id={id} />
+                <ShowComments id={restaurant._id} />
               </div>
             </div>
           ) : (
