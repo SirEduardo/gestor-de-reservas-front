@@ -67,10 +67,11 @@ const MyRestaurant = () => {
     { title: "Hora" },
     { title: "Nº" },
     { title: "Estado" },
+    { title: "Acciones" },
   ];
 
   return (
-    <>
+    <div>
       <Header />
       <div className="min-h-screen bg-gray-50">
         <div className="flex flex-col items-center justify-center pt-20">
@@ -87,7 +88,7 @@ const MyRestaurant = () => {
           </AnimatePresence>
         </div>
         {restaurant ? (
-          <div className="flex justify-around">
+          <div className="flex justify-evenly">
             <div
               key={restaurant._id}
               className="bg-white overflow-hidden shadow-lg rounded-lg"
@@ -107,7 +108,11 @@ const MyRestaurant = () => {
                 <p className="text-sm text-gray-500">{restaurant.location}</p>
               </div>
             </div>
+
             <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl">
+              <h2 className="text-gray-800 text-center text-2xl font-bold mb-5">
+                Reservas
+              </h2>
               <div className="flex gap-5 border-b border-gray-300 pb-4">
                 {headers.map((header, index) => (
                   <div
@@ -125,7 +130,9 @@ const MyRestaurant = () => {
                     key={reserve._id}
                   >
                     <div className="flex flex-col items-center flex-1">
-                      <h2>{reserve.user.userName}</h2>
+                      <h2>
+                        {reserve.user.userName} {reserve.user.lastName}
+                      </h2>
                     </div>
                     <div className="flex flex-col items-center flex-1">
                       <span>
@@ -133,7 +140,7 @@ const MyRestaurant = () => {
                       </span>
                     </div>
                     <div className="flex flex-col items-center flex-1">
-                      <span>{reserve.time}</span>
+                      <span>{reserve.time}H</span>
                     </div>
                     <div className="flex flex-col items-center flex-1">
                       <span>{reserve.n_persons}</span>
@@ -156,24 +163,29 @@ const MyRestaurant = () => {
                           : "Cancelada"}
                       </span>
                     </div>
-                    {reserve.state !== "cancelled" && (
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => CancelReservation(reserve._id)}
-                          className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 transition-colors"
-                          aria-label={`Cancelar reserva en ${restaurant.name}`}
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => ConfirmReservation(reserve._id)}
-                          className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors"
-                          aria-label={`Confirmar reserva en ${restaurant.name}`}
-                        >
-                          <Check className="w-4 h-4" />
-                        </button>
-                      </div>
-                    )}
+                    <div className="flex items-center flex-1">
+                      {reserve.state !== "cancelled" &&
+                      reserve.state !== "confirmed" ? (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => CancelReservation(reserve._id)}
+                            className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 transition-colors"
+                            aria-label={`Cancelar reserva en ${restaurant.name}`}
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => ConfirmReservation(reserve._id)}
+                            className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors"
+                            aria-label={`Confirmar reserva en ${restaurant.name}`}
+                          >
+                            <Check className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex-1"></div> // Espacio reservado en blanco
+                      )}
+                    </div>
                   </div>
                 ))
               ) : (
@@ -189,7 +201,7 @@ const MyRestaurant = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
