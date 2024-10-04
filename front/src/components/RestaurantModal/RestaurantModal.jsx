@@ -35,6 +35,7 @@ const RestaurantModal = ({ setModal }) => {
       });
       console.log("Restaurante creado", response.data);
       reset();
+      window.location.reload();
     } catch (error) {
       console.error("Error al crear el restaurante", error);
     }
