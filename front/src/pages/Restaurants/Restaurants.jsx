@@ -121,19 +121,23 @@ const Restaurants = () => {
                   </div>
                 </div>
               </section>
-              <div className="bg-white p-6 rounded-lg mb-8 flex justify-between shadow-md">
+              <div className="bg-white p-6 rounded-lg mb-8 flex flex-col items-center  shadow-md sm:flex-row sm:justify-between">
                 <div>
-                  <h4 className="font-bold text-lg mb-4">Contribuye!</h4>
+                  <h4 className="font-bold text-lg mb-4 text-center sm:text-start">
+                    Contribuye!
+                  </h4>
                   <Link to={`/comments/${id}`}>
-                    <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors">
+                    <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors mb-4 ">
                       Escribe un comentario
                     </button>
                   </Link>
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg mb-4">Haz tu reserva!</h4>
+                  <h4 className="font-bold text-lg mb-4 text-center sm:text-end">
+                    Haz tu reserva!
+                  </h4>
                   <Link to={`/createReservation/${id}`}>
-                    <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors">
+                    <button className="bg-black text-white hover:bg-primary/90 px-6 py-3 rounded-full font-bold transition-colors mb-4 ">
                       Reserva ahora
                     </button>
                   </Link>
