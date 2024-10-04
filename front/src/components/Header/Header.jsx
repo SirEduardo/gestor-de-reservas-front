@@ -36,7 +36,7 @@ export const Header = () => {
           <ul
             className={`${
               isMenuOpen ? "flex" : "hidden"
-            } md:flex flex-col md:flex-col items-center md:items-center md:justify-end w-full md:w-auto space-y-4 md:space-y-0 md:space-x-6 absolute md:relative top-16 md:top-0 left-0 right-0 bg-white md:bg-transparent p-4 md:p-0 shadow-md md:shadow-none z-10`}
+            } md:flex flex-col md:flex-row items-center w-full md:w-auto space-y-2 md:space-y-0 md:space-x-4 lg:space-x-6 absolute md:relative top-14 sm:top-16 md:top-0 left-0 right-0 bg-white md:bg-transparent p-4 md:p-0 shadow-md md:shadow-none z-10`}
           >
             {user ? (
               <div className="flex items-center gap-7 ">
