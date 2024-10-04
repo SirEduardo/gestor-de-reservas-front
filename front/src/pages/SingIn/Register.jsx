@@ -55,7 +55,7 @@ const Register = () => {
           className="bg-white shadow-xl rounded-lg p-8 space-y-6"
         >
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Create an Account
+            Create una Cuenta
           </h2>
           <div className="space-y-2">
             <label htmlFor="userName">Nombre</label>
@@ -100,7 +100,7 @@ const Register = () => {
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Correo electrónico</label>
             <input
               type="email"
               {...register("email", {
@@ -157,9 +157,9 @@ const Register = () => {
                 required: true,
               })}
             >
-              <option value="">Select a role</option>
-              <option value="admin">Admin</option>
-              <option value="client">Client</option>
+              <option value="">Selecciona un rol</option>
+              <option value="admin">Empresario</option>
+              <option value="client">Cliente</option>
             </select>
           </div>
           <button
@@ -172,13 +172,13 @@ const Register = () => {
             <p className="text-red-500 text-center text-sm mt-2">{error}</p>
           )}
         </form>
-        <p className="mt-4 text-center">Already have an account?</p>
+        <p className="mt-4 text-center">Ya tienes cuenta?</p>
         <button
           className="text-blue-500 hover:text-blue-700"
           type="button"
           onClick={() => setIsLogin(true)}
         >
-          Login
+          Inicia sesión
         </button>
       </div>
     </div>
