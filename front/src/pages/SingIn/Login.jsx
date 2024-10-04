@@ -48,14 +48,12 @@ const Login = () => {
           onSubmit={handleSubmit(submit)}
           className="bg-white shadow-xl rounded-lg p-8 space-y-6"
         >
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Welcome back
+          <h1 className="text-2xl text-center font-semibold tracking-tight">
+            Bienvenido
           </h1>
-          <p className="text-sm text-muted-foreground">
-            Enter your email to sign in to your account
-          </p>
+
           <div className="space-y-2">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Correo electrónico</label>
             <input
               type="email"
               {...register("email", {
@@ -107,20 +105,22 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            {loading ? "Login in..." : "Login"}
+            {loading ? "Iniciando sesión..." : "Iniciar sesión"}
           </button>
           {error && (
             <p className="text-red-500 text-center text-sm mt-2">{error}</p>
           )}
         </form>
         <div className="mt-6 text-center">
-          <p className="text-sm text-muted-foreground">Not registered yet?</p>
+          <p className="text-sm text-muted-foreground">
+            Aún no estas registrado?
+          </p>
           <button
             className="text-blue-500 hover:text-blue-700"
             type="button"
             onClick={() => setIsRegister(true)}
           >
-            Register
+            Registrate!
           </button>
         </div>
       </div>
