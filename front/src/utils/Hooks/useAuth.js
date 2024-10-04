@@ -24,6 +24,8 @@ const useAuth = () => {
           setError("Usuario no encontrado.");
         } else if (error.response.status === 400) {
           setError(error.response.data || "Usuario o contraseña incorrectos.");
+        } else if (error.response.status === 409) {
+          setError("Este usuario ya existe");
         } else {
           setError("Error. Porfavor, intentelo de nuevo");
         }
