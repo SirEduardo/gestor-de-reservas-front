@@ -58,7 +58,7 @@ const Register = () => {
             Create an Account
           </h2>
           <div className="space-y-2">
-            <label htmlFor="userName">Username</label>
+            <label htmlFor="userName">Nombre</label>
             <input
               type="text"
               {...register("userName", {
@@ -75,6 +75,27 @@ const Register = () => {
             {errors.userName && (
               <span className="text-red-500 text-sm">
                 {errors.userName.message}
+              </span>
+            )}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="lastName">Apellido</label>
+            <input
+              type="text"
+              {...register("lastName", {
+                required: true,
+                message: "lastName is required",
+              })}
+              id="lastName"
+              className={`w-full p-1 border ${
+                errors.lastName ? "border-red-500" : "border-gray-300"
+              } rounded-md focus:ring-2 ${
+                errors.lastName ? "focus:ring-red-500" : "focus:ring-blue-500"
+              }`}
+            />
+            {errors.lastName && (
+              <span className="text-red-500 text-sm">
+                {errors.lastName.message}
               </span>
             )}
           </div>
@@ -103,7 +124,7 @@ const Register = () => {
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Contraseña</label>
             <input
               type="password"
               {...register("password", {
@@ -128,7 +149,7 @@ const Register = () => {
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="role">Role</label>
+            <label htmlFor="role">Rol</label>
             <select
               id="role"
               className="w-full p-1 rounded-md"
@@ -145,7 +166,7 @@ const Register = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? "Registrandose..." : "Registrarse"}
           </button>
           {error && (
             <p className="text-red-500 text-center text-sm mt-2">{error}</p>
