@@ -21,7 +21,6 @@ const Login = () => {
     const url = `${API_URL}/users/login`;
     try {
       const res = await authUser(url, formData);
-      console.log(res);
       if (res) {
         console.log("Login successful", res.user.userName);
         StoreUserData(
