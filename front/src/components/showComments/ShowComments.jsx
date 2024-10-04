@@ -1,21 +1,25 @@
 import axios from "axios";
 import { API_URL } from "../../utils/Functions/api/api";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Rating from "../Rating/Rating";
 
-const ShowComments = () => {
-  const { id } = useParams();
+const ShowComments = ({ id }) => {
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const response = await axios.get(`${API_URL}/comments/${id}`);
-        const res = response.data;
-        setComments(res);
+        setComments(response.data);
       } catch (error) {
         console.error("Error recogiendo comentarios", error);
+        setError("No se pudieron cargar los comentarios.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -25,9 +29,17 @@ const ShowComments = () => {
   }, [id]);
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-white shadow-md rounded-lg p-6 w-full">
       <h2 className="text-2xl font-bold mb-6">Comentarios</h2>
-      {Array.isArray(comments) && comments.length > 0 ? (
+      {loading ? (
+        <div className="text-center py-8">
+          <p className="text-gray-500 text-lg">Cargando comentarios...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center py-8">
+          <p className="text-red-500 text-lg">{error}</p>
+        </div>
+      ) : Array.isArray(comments) && comments.length > 0 ? (
         <div className="space-y-6">
           {comments.map((comment) => (
             <div
