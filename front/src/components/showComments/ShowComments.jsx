@@ -57,7 +57,9 @@ const ShowComments = ({ id }) => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">
-                      {comment.user?.userName || "Usuario desconocido"}
+                      {`${comment.user?.userName} ${
+                        comment.user?.lastName || ""
+                      }`}
                     </h3>
                     <Rating
                       average_rating={comment.rating}
