@@ -15,7 +15,7 @@ const ReservationCard = ({
     <div>
       <div key={id} className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">{name}</h2>
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center text-gray-600">
             <CalendarDays className="w-5 h-5 mr-2" />
             <span>{new Date(booking_date).toLocaleDateString()}</span>
@@ -51,14 +51,16 @@ const ReservationCard = ({
               : "Cancelada"}
           </span>
         </div>
-        {state !== "cancelled" && (
+        {state !== "cancelled" ? (
           <button
             onClick={() => CancelReservation(id)}
-            className="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
+            className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
             aria-label={`Cancelar reserva en ${restaurant}`}
           >
             Cancelar Reserva
           </button>
+        ) : (
+          <div className="h-14"></div>
         )}
       </div>
     </div>
