@@ -19,7 +19,7 @@ const RestaurantModal = ({ setModal }) => {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("location", data.location);
-    formData.append("owner", userId);
+    formData.append("user", userId);
     formData.append("category", data.category);
     formData.append("img", data.img[0]);
     formData.append("telephone", data.telephone);
