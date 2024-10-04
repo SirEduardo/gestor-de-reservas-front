@@ -38,7 +38,7 @@ const CreateReservation = () => {
       );
       const res = response.data;
       console.log("Reserva realizada con éxito:", res);
-      navigate("/");
+      navigate("/myReservations");
     } catch (error) {
       console.log("Error al realizar la reserva:", error);
     }
