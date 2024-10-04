@@ -81,7 +81,7 @@ const MyRestaurant = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
-      <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
         <div className="flex-grow flex justify-center py-14 px-4 sm:px-6 lg:px-8">
           {!restaurant && (
             <button
@@ -105,7 +105,7 @@ const MyRestaurant = () => {
             <p className="text-red-500 text-lg">{error}</p>
           </div>
         ) : restaurant ? (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-10">
             <div className="flex flex-row justify-evenly">
               <div
                 key={restaurant._id}
@@ -213,7 +213,7 @@ const MyRestaurant = () => {
                 )}
               </div>
             </div>
-            <div className="w-2/4">
+            <div className="w-3/4 m-auto">
               <ShowComments id={restaurant._id} />
             </div>
           </div>
