@@ -1,5 +1,5 @@
 export const logout = () => {
-  const confirmation = confirm("sure you want to logout");
+  const confirmation = confirm("Seguro que quieres salir?");
   if (confirmation) {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
