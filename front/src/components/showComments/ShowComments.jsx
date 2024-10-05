@@ -1,43 +1,41 @@
-import axios from "axios";
 import { API_URL } from "../../utils/Functions/api/api";
 import { useEffect, useState } from "react";
 import Rating from "../Rating/Rating";
+import Loading from "../Loading/Loading";
+import useFetch from "../../utils/Hooks/fetch";
 
 const ShowComments = ({ id }) => {
   const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { loading, fetchData } = useFetch();
 
   useEffect(() => {
     const fetchComments = async () => {
+      if (!id) return;
       try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(`${API_URL}/comments/${id}`);
-        setComments(response.data);
-      } catch (error) {
-        console.error("Error recogiendo comentarios", error);
-        setError("No se pudieron cargar los comentarios.");
-      } finally {
-        setLoading(false);
+        const response = await fetchData(`${API_URL}/comments/${id}`);
+        if (response) {
+          setComments(response);
+        } else {
+          setComments([]);
+        }
+      } catch (err) {
+        setError("Error al cargar comentarios. Por favor intenta nuevamente.");
+        console.error(err);
       }
     };
 
-    if (id) {
-      fetchComments();
-    }
+    fetchComments();
   }, [id]);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full">
       <h2 className="text-2xl font-bold mb-6">Comentarios</h2>
       {loading ? (
-        <div className="text-center py-8">
-          <p className="text-gray-500 text-lg">Cargando comentarios...</p>
-        </div>
+        <Loading message="Cargando comentarios..." />
       ) : error ? (
         <div className="text-center py-8">
-          <p className="text-red-500 text-lg">{error}</p>
+          <p className="text-red-500 text-lg">{error}</p>{" "}
         </div>
       ) : Array.isArray(comments) && comments.length > 0 ? (
         <div className="space-y-6">
