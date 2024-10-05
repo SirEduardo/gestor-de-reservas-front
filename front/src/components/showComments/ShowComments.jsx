@@ -15,7 +15,7 @@ const ShowComments = ({ id }) => {
       try {
         const response = await fetchData(`${API_URL}/comments/${id}`);
         if (response) {
-          setComments(response);
+          setComments(response.comments);
         } else {
           setComments([]);
         }
