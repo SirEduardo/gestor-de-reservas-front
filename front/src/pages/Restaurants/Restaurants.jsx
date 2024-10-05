@@ -76,7 +76,7 @@ const Restaurants = () => {
                       <Clock className="w-5 h-5 text-gray-600" />
                       <div>
                         <h4 className="font-semibold">Horario</h4>
-                        {restaurant.opening}-{restaurant.closing}
+                        {restaurant.opening}H-{restaurant.closing}H
                       </div>
                     </div>
                     <div className="flex items-start space-x-2">
