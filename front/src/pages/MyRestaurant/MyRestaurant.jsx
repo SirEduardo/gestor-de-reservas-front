@@ -1,226 +1,240 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import RestaurantModal from "../../components/RestaurantModal/RestaurantModal";
-import { AnimatePresence } from "framer-motion";
-import axios from "axios";
+import { AnimatePresence, motion } from "framer-motion";
 import { API_URL } from "../../utils/Functions/api/api";
 import CancelReservation from "../../utils/Functions/Delete/CancelReservation";
 import ConfirmReservation from "../../utils/Functions/Confirm/Confirm";
-import { X, Check } from "lucide-react";
+import { X, Check, ChevronUp, ChevronDown } from "lucide-react";
 import ShowComments from "../../components/showComments/ShowComments";
+import Loading from "../../components/Loading/Loading";
+import useFetch from "../../utils/Hooks/fetch";
 
 const MyRestaurant = () => {
   const [modal, setModal] = useState(false);
   const [restaurant, setRestaurant] = useState(null);
   const [reservations, setReservations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [expandedReservation, setExpandedReservation] = useState(null);
+  const { loading, error, fetchData } = useFetch();
+  const token = localStorage.getItem("token");
 
   const getUserData = async () => {
-    const token = localStorage.getItem("token");
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(`${API_URL}/users`, {
+    const response = await fetchData(`${API_URL}/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userData = response;
+    const restaurant = userData.restaurant;
+    const restaurantId = restaurant[0]?._id;
+    if (!restaurantId) {
+      console.log("No restaurant found for this user");
+      return;
+    }
+    return restaurantId;
+  };
+  const getRestaurant = async (restaurantId) => {
+    const restaurantResponse = await fetchData(
+      `${API_URL}/restaurants/${restaurantId}`,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-
-      const userData = response.data;
-      const restaurant = userData.restaurant;
-      const restaurantId = restaurant[0]?._id;
-
-      if (!restaurantId) {
-        console.log("No restaurant found for this user");
-        return;
       }
-      const restaurantResponse = await axios.get(
-        `${API_URL}/restaurants/${restaurantId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setRestaurant(restaurantResponse.data);
-      const reservationsResponse = await axios.get(
-        `${API_URL}/reservations/restaurant/${restaurantId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setReservations(reservationsResponse.data.reservations);
-
-      console.log(restaurantResponse.data);
-      console.log(reservationsResponse.data.reservations);
-    } catch (error) {
-      console.log("Error fetching user data", error);
-      setError("No se pudo cargar la información del restaurante.");
-    } finally {
-      setLoading(false);
+    );
+    setRestaurant(restaurantResponse);
+  };
+  const getReservations = async (restaurant) => {
+    const reservationsResponse = await fetchData(
+      `${API_URL}/reservations/restaurant/${restaurant}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (reservationsResponse && reservationsResponse.reservations) {
+      setReservations(reservationsResponse.reservations);
+    } else {
+      setReservations([]);
     }
   };
 
   useEffect(() => {
-    getUserData();
+    const fetchData = async () => {
+      const restaurantId = await getUserData();
+      if (restaurantId) {
+        await getRestaurant(restaurantId);
+        await getReservations(restaurantId);
+      }
+    };
+    fetchData();
   }, []);
 
-  const headers = [
-    { title: "Nombre" },
-    { title: "Día" },
-    { title: "Hora" },
-    { title: "Nº" },
-    { title: "Estado" },
-    { title: "Acciones" },
-  ];
+  const toggleReservationExpansion = (id) => {
+    setExpandedReservation(expandedReservation === id ? null : id);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex-grow flex justify-center py-14 px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
+        <div className="flex justify-center mb-8 mt-8">
           {!restaurant && (
             <button
               onClick={() => setModal(!modal)}
-              className="bg-black text-white px-6 py-3 rounded-full font-bold transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold transition-colors shadow-lg"
             >
               Crea tu restaurante
             </button>
           )}
           <AnimatePresence>
-            {modal && <RestaurantModal setModal={setModal} />}
+            {modal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+              >
+                <RestaurantModal setModal={setModal} />
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
 
-        {loading ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500 text-lg">Cargando datos...</p>
-          </div>
-        ) : error ? (
+        {loading && <Loading message="Cargando la información..." />}
+
+        {!loading && error && (
           <div className="text-center py-8">
             <p className="text-red-500 text-lg">{error}</p>
           </div>
-        ) : restaurant ? (
-          <div className="flex flex-col gap-10">
-            <div className="flex flex-col lg:flex-row justify-evenly">
-              <div
-                key={restaurant._id}
-                className="bg-white overflow-hidden shadow-lg rounded-lg w-full lg:w-1/3"
-              >
-                <div className="px-4 py-5 sm:p-6 flex flex-col gap-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {restaurant.name}
-                  </h3>
+        )}
+
+        {!loading && !error && restaurant && (
+          <div className="space-y-8">
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+              <div className="md:flex">
+                <div className="md:flex-shrink-0">
                   <img
-                    className="rounded-lg w-full h-auto"
+                    className="h-48 w-full object-cover md:w-48"
                     src={restaurant.img}
                     alt={`${restaurant.name} image`}
                   />
-                  <p className="text-gray-600">{restaurant.opening}</p>
-                  <p className="text-gray-600">{restaurant.closing}</p>
-                  <p className="text-sm text-gray-500">{restaurant.category}</p>
-                  <p className="text-sm text-gray-500">{restaurant.location}</p>
+                </div>
+                <div className="p-8">
+                  <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                    {restaurant.category}
+                  </div>
+                  <h2 className="block mt-1 text-lg leading-tight font-medium text-black">
+                    {restaurant.name}
+                  </h2>
+                  <p className="mt-2 text-gray-500">
+                    Horario: {restaurant.opening} - {restaurant.closing}
+                  </p>
+                  <p className="mt-2 text-gray-500">{restaurant.location}</p>
                 </div>
               </div>
+            </div>
 
-              <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl">
-                <h2 className="text-gray-800 text-center text-2xl font-bold mb-5">
-                  Reservas
-                </h2>
-                <div className="flex gap-5 border-b border-gray-300 pb-4">
-                  {headers.map((header, index) => (
+            <div className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-gray-800 text-center text-2xl font-bold mb-6">
+                Reservas
+              </h2>
+              {reservations.length > 0 ? (
+                <div className="space-y-4">
+                  {reservations.map((reserve) => (
                     <div
-                      className="flex flex-col items-center flex-1"
-                      key={index}
+                      key={reserve._id}
+                      className="border-b border-gray-200 pb-4"
                     >
-                      <p className="text-lg font-semibold">{header.title}</p>
+                      <div
+                        className="flex justify-between items-center cursor-pointer"
+                        onClick={() => toggleReservationExpansion(reserve._id)}
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="font-semibold">
+                            {reserve.user.userName} {reserve.user.lastName}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {new Date(
+                              reserve.booking_date
+                            ).toLocaleDateString()}
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-semibold
+                            ${
+                              reserve.state === "confirmed"
+                                ? "bg-green-100 text-green-800"
+                                : reserve.state === "pending"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {reserve.state === "confirmed"
+                              ? "Confirmada"
+                              : reserve.state === "pending"
+                              ? "Pendiente"
+                              : "Cancelada"}
+                          </span>
+                          {expandedReservation === reserve._id ? (
+                            <ChevronUp size={20} />
+                          ) : (
+                            <ChevronDown size={20} />
+                          )}
+                        </div>
+                      </div>
+                      {expandedReservation === reserve._id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-4 space-y-2"
+                        >
+                          <p>Hora: {reserve.time} H</p>
+                          <p>Numero de personas: {reserve.n_persons}</p>
+                          {reserve.state !== "cancelled" &&
+                            reserve.state !== "confirmed" && (
+                              <div className="flex space-x-2 mt-2">
+                                <button
+                                  onClick={() => CancelReservation(reserve._id)}
+                                  className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 transition-colors"
+                                  aria-label={`Cancel reservation at ${restaurant.name}`}
+                                >
+                                  <X size={16} />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    ConfirmReservation(reserve._id)
+                                  }
+                                  className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors"
+                                  aria-label={`Confirm reservation at ${restaurant.name}`}
+                                >
+                                  <Check size={16} />
+                                </button>
+                              </div>
+                            )}
+                        </motion.div>
+                      )}
                     </div>
                   ))}
                 </div>
-                {reservations.length > 0 ? (
-                  reservations.map((reserve) => (
-                    <div
-                      className="flex flex-col lg:flex-row gap-5 border-b border-gray-300 py-4"
-                      key={reserve._id}
-                    >
-                      <div className="flex flex-col items-center flex-1">
-                        <h2>
-                          {reserve.user.userName} {reserve.user.lastName}
-                        </h2>
-                      </div>
-                      <div className="flex flex-col items-center flex-1">
-                        <span>
-                          {new Date(reserve.booking_date).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex flex-col items-center flex-1">
-                        <span>{reserve.time}H</span>
-                      </div>
-                      <div className="flex flex-col items-center flex-1">
-                        <span>{reserve.n_persons}</span>
-                      </div>
-                      <div className="flex flex-col items-center flex-1">
-                        <span
-                          className={`inline-block px-2 py-1 rounded-full text-sm font-semibold
-                      ${
-                        reserve.state === "confirmed"
-                          ? "bg-green-100 text-green-800"
-                          : reserve.state === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                        >
-                          {reserve.state === "confirmed"
-                            ? "Confirmada"
-                            : reserve.state === "pending"
-                            ? "Pendiente"
-                            : "Cancelada"}
-                        </span>
-                      </div>
-                      <div className="flex items-center flex-1">
-                        {reserve.state !== "cancelled" &&
-                        reserve.state !== "confirmed" ? (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => CancelReservation(reserve._id)}
-                              className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 transition-colors"
-                              aria-label={`Cancelar reserva en ${restaurant.name}`}
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => ConfirmReservation(reserve._id)}
-                              className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors"
-                              aria-label={`Confirmar reserva en ${restaurant.name}`}
-                            >
-                              <Check className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex-1"></div>
-                        )}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-600">
-                    No tienes reservas actualmente.
-                  </p>
-                )}
-              </div>
+              ) : (
+                <p className="text-gray-600 text-center">
+                  Aún no tienes reservas.
+                </p>
+              )}
             </div>
-            <div className="w-full lg:w-3/4 m-auto">
-              <ShowComments id={restaurant._id} />
-            </div>
+            <ShowComments id={restaurant._id} />
           </div>
-        ) : (
-          <div className="text-center">
-            <p className="text-xl font-semibold text-gray-700 mt-20">
-              No restaurants found. Create one to get started!
+        )}
+
+        {!loading && !error && !restaurant && (
+          <div className="text-center bg-white shadow-lg rounded-lg p-8">
+            <p className="text-xl font-semibold text-gray-700">
+              No se encontraron restaurantes. Crea uno para comenzar!
             </p>
           </div>
         )}
