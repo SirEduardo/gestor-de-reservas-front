@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { API_URL } from "../../utils/Functions/api/api";
 import { motion } from "framer-motion";
+import useFetch from "../../utils/Hooks/fetch";
 
 const RestaurantModal = ({ setModal }) => {
   const {
@@ -10,6 +10,7 @@ const RestaurantModal = ({ setModal }) => {
     formState: { errors },
     reset,
   } = useForm();
+  const { postData } = useFetch();
 
   const submit = async (data) => {
     const token = localStorage.getItem("token");
@@ -26,19 +27,15 @@ const RestaurantModal = ({ setModal }) => {
     formData.append("opening", data.opening);
     formData.append("closing", data.closing);
 
-    try {
-      const response = await axios.post(`${API_URL}/restaurants`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("Restaurante creado", response.data);
-      reset();
-      window.location.reload();
-    } catch (error) {
-      console.error("Error al crear el restaurante", error);
-    }
+    const response = await postData(`${API_URL}/restaurants`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("Restaurante creado", response);
+    reset();
+    window.location.reload();
   };
 
   return (
