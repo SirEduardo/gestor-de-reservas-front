@@ -37,7 +37,7 @@ const Cards = ({
         <p>{capitalize(category)}</p>
         <p>{capitalize(location)}</p>
         <p>
-          Horario: {opening} - {closing}
+          Horario: {opening}H-{closing}H
         </p>
       </div>
     </div>
