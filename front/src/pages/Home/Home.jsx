@@ -51,6 +51,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl">
             <SearchByName
               setRestaurants={setRestaurants}
+              allRestaurants={allRestaurants}
               categories={categories}
             />
             <SearchByCategory
