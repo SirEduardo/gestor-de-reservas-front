@@ -28,7 +28,7 @@ const Home = () => {
         setCategories(uniqueCategories);
       }
     } catch (err) {
-      setError("Error cargando restaurantes.");
+      setError("Error cargando restaurantes.", err);
     }
   };
 
