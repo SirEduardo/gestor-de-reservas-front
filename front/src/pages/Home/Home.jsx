@@ -12,19 +12,23 @@ const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
-  const { loading, error, fetchData } = useFetch();
+  const [error, setError] = useState(null);
+  const { loading, fetchData } = useFetch();
 
   const getRestaurants = async () => {
-    const res = await fetchData(`${API_URL}/restaurants`);
+    try {
+      const res = await fetchData(`${API_URL}/restaurants`);
+      if (res) {
+        setRestaurants(res);
+        setAllRestaurants(res);
 
-    if (res) {
-      setRestaurants(res);
-      setAllRestaurants(res);
-
-      const uniqueCategories = Array.from(
-        new Set(res.map((restaurant) => restaurant.category))
-      );
-      setCategories(uniqueCategories);
+        const uniqueCategories = Array.from(
+          new Set(res.map((restaurant) => restaurant.category))
+        );
+        setCategories(uniqueCategories);
+      }
+    } catch (err) {
+      setError("Error cargando restaurantes.");
     }
   };
 
@@ -56,34 +60,32 @@ const Home = () => {
         <div className="mt-16">
           {loading && <Loading message="Cargando restaurantes..." />}
           {!loading && error ? (
-            <p className="text-center text-red-600 text-xl">{error}</p>
-          ) : restaurants.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {restaurants.map((res) => (
-                <Link
-                  key={res._id}
-                  to={`/restaurants/${res._id}`}
-                  className="block"
-                >
-                  <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <Cards
-                      name={res.name}
-                      id={res._id}
-                      img={res.img}
-                      category={res.category}
-                      average_rating={res.average_rating}
-                      rating_number={res.rating_number}
-                      opening={res.opening}
-                      closing={res.closing}
-                    />
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <p className="text-center text-gray-600 text-xl">{error}</p>
           ) : (
-            <p className="text-center text-gray-600 text-xl">
-              No hay restaurantes disponibles
-            </p>
+            restaurants.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                {restaurants.map((res) => (
+                  <Link
+                    key={res._id}
+                    to={`/restaurants/${res._id}`}
+                    className="block"
+                  >
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                      <Cards
+                        name={res.name}
+                        id={res._id}
+                        img={res.img || "default-image.jpg"}
+                        category={res.category}
+                        average_rating={res.average_rating}
+                        rating_number={res.rating_number}
+                        opening={res.opening}
+                        closing={res.closing}
+                      />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )
           )}
         </div>
       </main>
