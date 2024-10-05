@@ -2,36 +2,30 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../../components/Rating/Rating";
 import { Header } from "../../components/Header/Header";
-import axios from "axios";
 import ShowComments from "../../components/showComments/ShowComments";
 import { Star, MapPin, Phone, Clock } from "lucide-react";
 import { API_URL } from "../../utils/Functions/api/api";
+import Loading from "../../components/Loading/Loading";
+import useFetch from "../../utils/Hooks/fetch";
 
 const Restaurants = () => {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { loading, error, fetchData } = useFetch();
 
   useEffect(() => {
-    setLoading(true);
     const fetchRestaurant = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/restaurants`);
-        const allRestaurants = response.data;
+      const response = await fetchData(`${API_URL}/restaurants`);
+      const allRestaurants = response;
 
-        const foundRestaurant = allRestaurants.find((rest) => rest._id === id);
+      const foundRestaurant = allRestaurants.find((rest) => rest._id === id);
 
-        setRestaurants(allRestaurants);
-        setRestaurant(foundRestaurant);
-        setLoading(false);
-      } catch (error) {
-        console.log("Error recogiendo el restaurante del fetch", error);
-        setLoading(false);
-      }
+      setRestaurants(allRestaurants);
+      setRestaurant(foundRestaurant);
     };
     fetchRestaurant();
-  }, [id]);
+  }, []);
 
   const findIndex = () => {
     const itemsSorted = [...restaurants].sort(
@@ -149,7 +143,13 @@ const Restaurants = () => {
             </div>
           ) : (
             <p className="text-center">
-              {loading ? "Cargando..." : "No hay restaurantes disponibles"}
+              {loading && <Loading message="Cargando la información..." />}
+
+              {!loading && error && (
+                <div className="text-center py-8">
+                  <p className="text-red-500 text-lg">{error}</p>
+                </div>
+              )}
             </p>
           )}
         </div>
