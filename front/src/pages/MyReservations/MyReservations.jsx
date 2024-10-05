@@ -1,39 +1,26 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../utils/Functions/api/api";
 import { Header } from "../../components/Header/Header";
 import ReservationCard from "../../components/Create/ReservationCard/ReservationCard";
+import Loading from "../../components/Loading/Loading";
+import useFetch from "../../utils/Hooks/fetch";
 
 const MyReservations = () => {
   const [reservations, setReservations] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { loading, error, fetchData } = useFetch();
 
   useEffect(() => {
     const fetchReservations = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-        const response = await axios.get(
-          `${API_URL}/reservations/my-reservation`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        setReservations(response.data.reserve);
-        console.log(response.data.reserve);
-
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching reservations", error);
-        setError(
-          "No se pudo cargar las reservas. Por favor, intenta de nuevo más tarde."
-        );
-      } finally {
-        setLoading(false);
-      }
+      const response = await fetchData(
+        `${API_URL}/reservations/my-reservation`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setReservations(response.reserve);
+      console.log(response.reserve);
     };
 
     fetchReservations();
@@ -42,7 +29,7 @@ const MyReservations = () => {
     };
   }, []);
 
-  if (loading) return <div>Cargando reservas...</div>;
+  if (loading) return <Loading message="Cargando reservas..." />;
   if (error) return <div>{error}</div>;
 
   return (
