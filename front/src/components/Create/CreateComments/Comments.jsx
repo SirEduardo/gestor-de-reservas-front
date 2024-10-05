@@ -83,7 +83,7 @@ const Comments = () => {
               </button>
             </div>
           </form>
-          {loading && <Loading message="Cargando..." />}
+          {loading && <Loading color="text-white" message="Cargando..." />}
           {!loading && error && (
             <p className="text-red-500 text-xs italic mt-3">{error}</p>
           )}
