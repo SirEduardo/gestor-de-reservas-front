@@ -139,7 +139,11 @@ const CreateReservation = () => {
             type="submit"
             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-4 rounded-md hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1"
           >
-            {loading ? <Loading message="Cargando..." /> : "Enviar"}
+            {loading ? (
+              <Loading color="text-white" message="Cargando..." />
+            ) : (
+              "Enviar"
+            )}
           </button>
         </form>
       </div>
