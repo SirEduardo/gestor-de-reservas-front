@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../utils/Functions/api/api";
 import StoreUserData from "../../utils/Functions/StoreUserData";
 import { Header } from "../../components/Header/Header";
+import Loading from "../../components/Loading/Loading";
 
 const Login = () => {
   const {
@@ -105,7 +106,11 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+            {loading ? (
+              <Loading message="Iniciando sesión..." />
+            ) : (
+              "Iniciar sesión"
+            )}
           </button>
           {error && (
             <p className="text-red-500 text-center text-sm mt-2">{error}</p>
