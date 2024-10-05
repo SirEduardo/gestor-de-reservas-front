@@ -137,7 +137,7 @@ const MyRestaurant = () => {
                     {restaurant.name}
                   </h2>
                   <p className="mt-2 text-gray-500">
-                    Horario: {restaurant.opening} - {restaurant.closing}
+                    Horario: {restaurant.opening}H - {restaurant.closing}H
                   </p>
                   <p className="mt-2 text-gray-500">{restaurant.location}</p>
                 </div>
