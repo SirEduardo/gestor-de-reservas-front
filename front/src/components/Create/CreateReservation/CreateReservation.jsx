@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import { CalendarIcon, ClockIcon, UsersIcon } from "lucide-react";
-
 import { Header } from "../../Header/Header";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../../utils/Functions/api/api";
+import useFetch from "../../../utils/Hooks/fetch";
+import Loading from "../../Loading/Loading";
 
 const CreateReservation = () => {
   const { id } = useParams();
+  const { loading, postData } = useFetch();
   const navigate = useNavigate();
   const {
     register,
@@ -26,22 +27,14 @@ const CreateReservation = () => {
       time: data.time,
       n_persons: data.n_persons,
     };
-    try {
-      const response = await axios.post(
-        `${API_URL}/reservations/${id}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const res = response.data;
-      console.log("Reserva realizada con éxito:", res);
-      navigate("/myReservations");
-    } catch (error) {
-      console.log("Error al realizar la reserva:", error);
-    }
+    const response = await postData(`${API_URL}/reservations/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const res = response;
+    console.log("Reserva realizada con éxito:", res);
+    navigate("/myReservations");
   };
 
   return (
@@ -146,7 +139,7 @@ const CreateReservation = () => {
             type="submit"
             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-4 rounded-md hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1"
           >
-            Enviar
+            {loading ? <Loading message="Cargando..." /> : "Enviar"}
           </button>
         </form>
       </div>
