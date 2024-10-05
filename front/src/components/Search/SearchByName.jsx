@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { API_URL } from "../../utils/Functions/api/api";
 
-const SearchByName = ({ setRestaurants }) => {
+const SearchByName = ({ setRestaurants, allRestaurants }) => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,7 +13,7 @@ const SearchByName = ({ setRestaurants }) => {
     setError("");
 
     if (!search.trim()) {
-      setRestaurants([]);
+      setRestaurants(allRestaurants);
       setLoading(false);
       return;
     }
