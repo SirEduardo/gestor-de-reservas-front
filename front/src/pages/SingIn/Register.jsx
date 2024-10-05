@@ -167,7 +167,11 @@ const Register = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            {loading ? <Loading message="Registrandose..." /> : "Registrarse"}
+            {loading ? (
+              <Loading color="text-white" message="Registrandose..." />
+            ) : (
+              "Registrarse"
+            )}
           </button>
           {error && (
             <p className="text-red-500 text-center text-sm mt-2">{error}</p>
