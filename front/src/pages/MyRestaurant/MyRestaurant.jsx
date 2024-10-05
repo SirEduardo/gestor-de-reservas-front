@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import RestaurantModal from "../../components/RestaurantModal/RestaurantModal";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,9 +16,10 @@ const MyRestaurant = () => {
   const [reservations, setReservations] = useState([]);
   const [expandedReservation, setExpandedReservation] = useState(null);
   const { loading, error, fetchData } = useFetch();
+
   const token = localStorage.getItem("token");
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     const response = await fetchData(`${API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,40 +34,46 @@ const MyRestaurant = () => {
       return;
     }
     return restaurantId;
-  };
-  const getRestaurant = async (restaurantId) => {
-    const restaurantResponse = await fetchData(
-      `${API_URL}/restaurants/${restaurantId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setRestaurant(restaurantResponse);
-  };
-  const getReservations = async (restaurant) => {
-    const reservationsResponse = await fetchData(
-      `${API_URL}/reservations/restaurant/${restaurant}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (reservationsResponse && reservationsResponse.reservations) {
-      setReservations(reservationsResponse.reservations);
-    } else {
-      setReservations([]);
-    }
-  };
+  }, [fetchData, token]);
+
+  const getRestaurant = useCallback(
+    async (restaurantId) => {
+      const restaurantResponse = await fetchData(
+        `${API_URL}/restaurants/${restaurantId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRestaurant(restaurantResponse);
+    },
+    [fetchData, token]
+  );
+
+  const getReservations = useCallback(
+    async (restaurant) => {
+      const reservationsResponse = await fetchData(
+        `${API_URL}/reservations/restaurant/${restaurant}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setReservations(reservationsResponse?.reservations || []);
+    },
+    [fetchData, token]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       const restaurantId = await getUserData();
       if (restaurantId) {
-        await getRestaurant(restaurantId);
-        await getReservations(restaurantId);
+        await Promise.all([
+          getRestaurant(restaurantId),
+          getReservations(restaurantId),
+        ]);
       }
     };
     fetchData();
