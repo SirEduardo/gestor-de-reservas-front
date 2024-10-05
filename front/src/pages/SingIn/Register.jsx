@@ -6,6 +6,7 @@ import { API_URL } from "../../utils/Functions/api/api";
 import Login from "./Login";
 import useAuth from "../../utils/Hooks/useAuth";
 import StoreUserData from "../../utils/Functions/StoreUserData";
+import Loading from "../../components/Loading/Loading";
 
 const Register = () => {
   const {
@@ -166,7 +167,7 @@ const Register = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            {loading ? "Registrandose..." : "Registrarse"}
+            {loading ? <Loading message="Registrandose..." /> : "Registrarse"}
           </button>
           {error && (
             <p className="text-red-500 text-center text-sm mt-2">{error}</p>
