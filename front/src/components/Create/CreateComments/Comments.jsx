@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Header } from "../../Header/Header";
 import Rate from "../../Rating/Rate";
-import axios from "axios";
 import { API_URL } from "../../../utils/Functions/api/api";
 import { useNavigate, useParams } from "react-router-dom";
+import useFetch from "../../../utils/Hooks/fetch";
+import Loading from "../../Loading/Loading";
 
 const Comments = () => {
   const { id } = useParams();
   const [input, setInput] = useState("");
   const [rating, setRating] = useState(0);
   const [error, setError] = useState(null);
+  const { loading, postData } = useFetch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -30,26 +32,15 @@ const Comments = () => {
     };
     console.log(commentData);
 
-    try {
-      const response = await axios.post(
-        `${API_URL}/comments/${id}`,
-        commentData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("Comment posted successfully:", response.data);
-      setInput("");
-      setRating(0);
-      setError(null);
-      navigate(`/restaurants/${id}`);
-    } catch (error) {
-      console.error("Error posting comment:", error.response.data);
-      setError("Debes estar registrado");
-    }
+    const response = await postData(`${API_URL}/comments/${id}`, commentData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Comment posted successfully:", response);
+    setInput("");
+    setRating(0);
+    navigate(`/restaurants/${id}`);
   };
 
   return (
@@ -92,7 +83,10 @@ const Comments = () => {
               </button>
             </div>
           </form>
-          {error && <p className="text-red-500 text-xs italic mt-3">{error}</p>}
+          {loading && <Loading message="Cargando..." />}
+          {!loading && error && (
+            <p className="text-red-500 text-xs italic mt-3">{error}</p>
+          )}
         </div>
       </div>
     </div>
