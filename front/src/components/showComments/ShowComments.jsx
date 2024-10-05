@@ -33,7 +33,7 @@ const ShowComments = ({ id }) => {
       <h2 className="text-2xl font-bold mb-6">Comentarios</h2>
       {loading ? (
         <Loading message="Cargando comentarios..." />
-      ) : error ? (
+      ) : !loading && error ? (
         <div className="text-center py-8">
           <p className="text-red-500 text-lg">{error}</p>{" "}
         </div>
