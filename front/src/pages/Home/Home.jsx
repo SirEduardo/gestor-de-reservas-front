@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { Link } from "react-router-dom";
 import Cards from "../../components/Create/Cards/Cards";
@@ -15,11 +15,15 @@ const Home = () => {
   const [error, setError] = useState(null);
   const { loading, fetchData } = useFetch();
 
-  const getRestaurants = async () => {
+  const getRestaurants = useCallback(async () => {
     try {
       const res = await fetchData(`${API_URL}/restaurants`);
-      if (res) {
-        setRestaurants(res);
+      if (res && res.length > 0) {
+        const sortedRestaurants = res.sort(
+          (a, b) => b.average_rating - a.average_rating
+        );
+
+        setRestaurants(sortedRestaurants);
         setAllRestaurants(res);
 
         const uniqueCategories = Array.from(
@@ -30,10 +34,10 @@ const Home = () => {
     } catch (err) {
       setError("Error cargando restaurantes.", err);
     }
-  };
+  }, [fetchData]);
 
   useEffect(() => {
-    getRestaurants(restaurants);
+    getRestaurants();
   }, []);
 
   return (
