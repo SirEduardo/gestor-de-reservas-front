@@ -1,7 +1,7 @@
-const Loading = ({ message = "Loading data..." }) => {
+const Loading = ({ color = "text-gray-500", message = "Loading data..." }) => {
   return (
     <div className="flex items-center justify-center gap-2">
-      <p className="text-gray-500 text-lg">{message}</p>
+      <p className={`${color} text-lg`}>{message}</p>
       <div className="inline-block animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
     </div>
   );
