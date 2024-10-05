@@ -27,7 +27,6 @@ const MyRestaurant = () => {
     const userData = response;
     const restaurant = userData.restaurant;
     const restaurantId = restaurant[0]?._id;
-    console.log(restaurant);
 
     if (!restaurantId) {
       console.log("No restaurant found for this user");
