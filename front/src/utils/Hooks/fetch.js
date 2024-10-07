@@ -28,12 +28,7 @@ const useFetch = () => {
   const putData = async (url, data, options = {}) => {
     return fetchData(url, { method: "PUT", data, ...options });
   };
-
-  const deleteData = async (url, options = {}) => {
-    return fetchData(url, { method: "DELETE", ...options });
-  };
-
-  return { loading, error, fetchData, postData, putData, deleteData };
+  return { loading, error, fetchData, postData, putData };
 };
 
 export default useFetch;
