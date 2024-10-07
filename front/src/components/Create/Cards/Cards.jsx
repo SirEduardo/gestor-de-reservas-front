@@ -28,12 +28,12 @@ const Cards = ({
       ></img>
       <div className=" flex flex-col gap-2 p-3">
         <h2 className="font-bold">{capitalize(name)}</h2>
-        <p>
+        <div>
           <Rating
             average_rating={average_rating}
             rating_number={rating_number}
           />
-        </p>
+        </div>
         <p>{capitalize(category)}</p>
         <p>{capitalize(location)}</p>
         <p>
