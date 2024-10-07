@@ -24,6 +24,10 @@ const Comments = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
 
+    if (!token) {
+      setError("Debes estar logeado para dejar un comentario");
+      return;
+    }
     const commentData = {
       user: userId,
       restaurant: id,
