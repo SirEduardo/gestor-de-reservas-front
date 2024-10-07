@@ -5,12 +5,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../../utils/Functions/api/api";
 import useFetch from "../../../utils/Hooks/fetch";
 import Loading from "../../Loading/Loading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CreateReservation = () => {
   const { id } = useParams();
-  const { loading, postData } = useFetch();
+  const { loading, fetchData, postData } = useFetch();
   const [error, setError] = useState(null);
+  const [restaurant, setRestaurant] = useState(null);
   const navigate = useNavigate();
   const {
     register,
@@ -40,6 +41,27 @@ const CreateReservation = () => {
     });
     console.log("Reserva realizada con éxito:", response);
     navigate("/myReservations");
+  };
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      const response = await fetchData(`${API_URL}/restaurants/${id}`);
+      setRestaurant(response);
+    };
+
+    fetchRestaurant();
+  }, [id]);
+
+  const isTimeValid = (time) => {
+    if (!restaurant) return true;
+    const [selectedHour, selectedMinute] = time.split(":").map(Number);
+    const openingHour = parseInt(restaurant.opening);
+    const closingHour = parseInt(restaurant.closing);
+
+    return (
+      (selectedHour > openingHour && selectedHour < closingHour) ||
+      (selectedHour === openingHour && selectedMinute >= 0) ||
+      (selectedHour === closingHour && selectedMinute === 0)
+    );
   };
 
   const getTodayDate = () => {
@@ -103,6 +125,9 @@ const CreateReservation = () => {
                 {...register("time", {
                   required: true,
                   message: "Ingrese la hora porfavor",
+                  validate: {
+                    validTime: (value) => isTimeValid(value) || "Local cerrado",
+                  },
                 })}
                 id="time"
                 className={`w-full p-2 pr-10 border ${
