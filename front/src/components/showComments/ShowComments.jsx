@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 import Rating from "../Rating/Rating";
 import Loading from "../Loading/Loading";
 import useFetch from "../../utils/Hooks/fetch";
+import DeleteComments from "../../utils/Functions/Delete/DeleteComments";
+import { Trash2 } from "lucide-react";
 
 const ShowComments = ({ id }) => {
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
   const { loading, fetchData } = useFetch();
+
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -27,6 +31,17 @@ const ShowComments = ({ id }) => {
 
     fetchComments();
   }, [id]);
+
+  const handleDelete = async (commentId) => {
+    try {
+      await DeleteComments(commentId);
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment._id !== commentId)
+      );
+    } catch (error) {
+      console.log("Error deleting comment", error);
+    }
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full">
@@ -76,6 +91,14 @@ const ShowComments = ({ id }) => {
                     </p>
                   </div>
                 </div>
+                {comment.user?._id === userId && (
+                  <button
+                    onClick={() => handleDelete(comment._id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                )}
               </div>
               <p className="text-gray-700 mt-2">{comment.text}</p>
             </div>
