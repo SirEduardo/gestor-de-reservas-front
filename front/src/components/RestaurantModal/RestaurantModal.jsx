@@ -95,6 +95,7 @@ const RestaurantModal = ({ setModal }) => {
             <InputField
               label="Número de teléfono"
               id="telephone"
+              type="tel"
               register={register}
               errors={errors}
               required
