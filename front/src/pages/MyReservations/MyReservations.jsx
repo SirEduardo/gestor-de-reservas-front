@@ -20,7 +20,6 @@ const MyReservations = () => {
         }
       );
       setReservations(response.reserve);
-      console.log(response.reserve);
     };
 
     fetchReservations();
@@ -37,7 +36,7 @@ const MyReservations = () => {
       <Header />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Mis Reservas</h1>
-        {reservations.length === 0 ? (
+        {reservations?.length === 0 ? (
           <p className="text-gray-600">No tienes reservas actualmente.</p>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
