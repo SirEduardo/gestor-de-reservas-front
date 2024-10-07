@@ -5,10 +5,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { API_URL } from "../../utils/Functions/api/api";
 import CancelReservation from "../../utils/Functions/Delete/CancelReservation";
 import ConfirmReservation from "../../utils/Functions/Confirm/Confirm";
-import { X, Check, ChevronUp, ChevronDown } from "lucide-react";
+import { X, Check, ChevronUp, ChevronDown, Trash2 } from "lucide-react";
 import ShowComments from "../../components/showComments/ShowComments";
 import Loading from "../../components/Loading/Loading";
 import useFetch from "../../utils/Hooks/fetch";
+import DeleteRestaurant from "../../utils/Functions/Delete/DeleteRestaurant";
 
 const MyRestaurant = () => {
   const [modal, setModal] = useState(false);
@@ -83,6 +84,14 @@ const MyRestaurant = () => {
     setExpandedReservation(expandedReservation === id ? null : id);
   };
 
+  const handleDelete = async (restaurantId) => {
+    try {
+      await DeleteRestaurant(restaurantId);
+      setRestaurant(null);
+    } catch (error) {
+      console.log("Error deleting restaurant", error);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
@@ -120,6 +129,12 @@ const MyRestaurant = () => {
 
         {!loading && !error && restaurant && (
           <div className="space-y-8">
+            <button
+              onClick={() => handleDelete(restaurant._id)}
+              className="flex items-center gap-1 text-red-500 hover:text-red-700"
+            >
+              Eliminar <Trash2 className="w-4 h-4" />
+            </button>
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
               <div className="md:flex">
                 <div className="md:flex-shrink-0">
