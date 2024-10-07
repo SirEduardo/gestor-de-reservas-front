@@ -1,4 +1,4 @@
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CalendarIcon, ClockIcon, UsersIcon } from "lucide-react";
 import { Header } from "../../Header/Header";
 import { useNavigate, useParams } from "react-router-dom";
@@ -42,6 +42,13 @@ const CreateReservation = () => {
     navigate("/myReservations");
   };
 
+  const getTodayDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+  };
   return (
     <div>
       <Header />
@@ -68,6 +75,7 @@ const CreateReservation = () => {
                   message: "Ingrese la fecha porfavor",
                 })}
                 id="booking"
+                min={getTodayDate()}
                 className={`w-full p-2 pr-10 border ${
                   errors.booking ? "border-red-500" : "border-gray-300"
                 } rounded-md focus:ring-2 ${
