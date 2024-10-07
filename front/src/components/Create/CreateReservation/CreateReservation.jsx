@@ -32,8 +32,7 @@ const CreateReservation = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    const res = response;
-    console.log("Reserva realizada con éxito:", res);
+    console.log("Reserva realizada con éxito:", response);
     navigate("/myReservations");
   };
 
