@@ -5,6 +5,7 @@ import { logout } from "../../utils/Functions/logout";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const user = localStorage.getItem("user");
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export const Header = () => {
           >
             TripAdvisor
           </NavLink>
-
           <div className="md:hidden">
             <button onClick={toggleMenu} className="p-2">
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
