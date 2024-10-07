@@ -1,14 +1,16 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { CalendarIcon, ClockIcon, UsersIcon } from "lucide-react";
 import { Header } from "../../Header/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../../utils/Functions/api/api";
 import useFetch from "../../../utils/Hooks/fetch";
 import Loading from "../../Loading/Loading";
+import { useState } from "react";
 
 const CreateReservation = () => {
   const { id } = useParams();
   const { loading, postData } = useFetch();
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const {
     register,
@@ -19,6 +21,10 @@ const CreateReservation = () => {
   const submit = async (data) => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
+    if (!token) {
+      setError("Debes estar logeado para hacer una reserva.");
+      return;
+    }
 
     const formData = {
       user: userId,
@@ -144,6 +150,11 @@ const CreateReservation = () => {
               "Enviar"
             )}
           </button>
+          {error && (
+            <div className="mt-4">
+              <span className="text-red-600">{error}</span>
+            </div>
+          )}
         </form>
       </div>
     </div>
