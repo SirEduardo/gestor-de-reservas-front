@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { API_URL } from "../../utils/Functions/api/api";
 import { motion } from "framer-motion";
 import useFetch from "../../utils/Hooks/fetch";
+import Loading from "../Loading/Loading";
 
 const RestaurantModal = ({ setModal }) => {
   const {
@@ -10,7 +11,7 @@ const RestaurantModal = ({ setModal }) => {
     formState: { errors },
     reset,
   } = useForm();
-  const { postData } = useFetch();
+  const { loading, postData } = useFetch();
 
   const submit = async (data) => {
     const token = localStorage.getItem("token");
@@ -33,9 +34,10 @@ const RestaurantModal = ({ setModal }) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log("Restaurante creado", response);
-    reset();
-    window.location.reload();
+    if (response) {
+      window.location.reload();
+      reset();
+    }
   };
 
   return (
@@ -118,21 +120,24 @@ const RestaurantModal = ({ setModal }) => {
               errors={errors}
               required
             />
-            <div className="flex justify-end space-x-4 mt-6">
-              <button
-                type="button"
-                onClick={() => setModal(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-              >
-                Crear
-              </button>
-            </div>
+            {loading && <Loading message="Creando..." />}
+            {!loading && (
+              <div className="flex justify-end space-x-4 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setModal(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                >
+                  Crear
+                </button>
+              </div>
+            )}
           </form>
         </motion.div>
       </motion.div>
