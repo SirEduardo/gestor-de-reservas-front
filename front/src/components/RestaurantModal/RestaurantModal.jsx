@@ -74,6 +74,15 @@ const RestaurantModal = ({ setModal }) => {
               register={register}
               errors={errors}
               required
+              options={[
+                { value: "", label: "Seleccione un tipo de cocina" },
+                { value: "italiana", label: "Italiana" },
+                { value: "española", label: "Española" },
+                { value: "mexicana", label: "Mexicana" },
+                { value: "americana", label: "Americana" },
+                { value: "japonesa", label: "Japonesa" },
+              ]}
+              isSelect
             />
             <InputField
               label="Imagen del restaurante"
@@ -135,6 +144,8 @@ const InputField = ({
   register,
   errors,
   required,
+  options = [],
+  isSelect = false,
 }) => {
   return (
     <div>
@@ -144,18 +155,40 @@ const InputField = ({
       >
         {label}
       </label>
-      <input
-        type={type}
-        id={id}
-        {...register(id, {
-          required: required && `Por favor, introduzca ${label.toLowerCase()}`,
-        })}
-        className={`w-full p-2 border ${
-          errors[id] ? "border-red-500" : "border-gray-300"
-        } rounded-md focus:ring-2 ${
-          errors[id] ? "focus:ring-red-500" : "focus:ring-blue-500"
-        } transition duration-300`}
-      />
+      {isSelect ? (
+        <select
+          id={id}
+          {...register(id, {
+            required:
+              required && `Por favor, seleccione ${label.toLowerCase()}`,
+          })}
+          className={`w-full p-2 border ${
+            errors[id] ? "border-red-500" : "border-gray-300"
+          } rounded-md focus:ring-2 ${
+            errors[id] ? "focus:ring-red-500" : "focus:ring-blue-500"
+          } transition duration-300`}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          id={id}
+          {...register(id, {
+            required:
+              required && `Por favor, introduzca ${label.toLowerCase()}`,
+          })}
+          className={`w-full p-2 border ${
+            errors[id] ? "border-red-500" : "border-gray-300"
+          } rounded-md focus:ring-2 ${
+            errors[id] ? "focus:ring-red-500" : "focus:ring-blue-500"
+          } transition duration-300`}
+        />
+      )}
       {errors[id] && (
         <span className="mt-1 text-sm text-red-600">{errors[id].message}</span>
       )}
