@@ -27,7 +27,7 @@ const SearchByCategory = ({ setRestaurants, restaurants, categories }) => {
         <option value="">Todas las categorías</option>
         {categories.map((category) => (
           <option key={category} value={category}>
-            {category}
+            {category.charAt(0).toUpperCase() + category.slice(1)}
           </option>
         ))}
       </select>
