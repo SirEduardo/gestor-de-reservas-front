@@ -99,6 +99,8 @@ const RestaurantModal = ({ setModal }) => {
               register={register}
               errors={errors}
               required
+              pattern="^\d{9}$"
+              placeholder="Ej: 923666444"
             />
             <InputField
               label="Hora de apertura"
@@ -147,6 +149,7 @@ const InputField = ({
   required,
   options = [],
   isSelect = false,
+  pattern,
 }) => {
   return (
     <div>
@@ -182,12 +185,17 @@ const InputField = ({
           {...register(id, {
             required:
               required && `Por favor, introduzca ${label.toLowerCase()}`,
+            pattern: pattern && {
+              value: new RegExp(pattern),
+              message: "El número de teléfono debe tener 9 dígitos",
+            },
           })}
           className={`w-full p-2 border ${
             errors[id] ? "border-red-500" : "border-gray-300"
           } rounded-md focus:ring-2 ${
             errors[id] ? "focus:ring-red-500" : "focus:ring-blue-500"
           } transition duration-300`}
+          placeholder={id === "telephone" ? "Ej: 923666444" : ""}
         />
       )}
       {errors[id] && (
