@@ -142,7 +142,7 @@ const Restaurants = () => {
               </div>
             </div>
           ) : (
-            <p className="text-center">
+            <div className="text-center">
               {loading && <Loading message="Cargando la información..." />}
 
               {!loading && error && (
@@ -150,7 +150,7 @@ const Restaurants = () => {
                   <p className="text-red-500 text-lg">{error}</p>
                 </div>
               )}
-            </p>
+            </div>
           )}
         </div>
       </div>
