@@ -84,9 +84,7 @@ const Login = () => {
               {...register("password", {
                 required: true,
                 pattern: {
-                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]+$/,
-                  message:
-                    "The password must include numbers, upper and lower case letters.",
+                  message: "Wrong Password",
                 },
               })}
               id="password"
