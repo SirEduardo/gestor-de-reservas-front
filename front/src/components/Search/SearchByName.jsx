@@ -1,57 +1,37 @@
-import axios from "axios";
-import { useState } from "react";
-import { API_URL } from "../../utils/Functions/api/api";
+import { useEffect, useState } from "react";
 
 const SearchByName = ({ setRestaurants, allRestaurants }) => {
   const [search, setSearch] = useState("");
+  const [originalRestaurants, setOriginalRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const filterRestaurants = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    if (!search.trim()) {
-      setRestaurants(allRestaurants);
-      setLoading(false);
-      return;
+  useEffect(() => {
+    if (originalRestaurants.length === 0) {
+      setOriginalRestaurants(allRestaurants);
     }
+  }, [allRestaurants, originalRestaurants]);
 
-    try {
-      const response = await axios.get(`${API_URL}/restaurants`);
+  let filteredRestaurants = originalRestaurants;
 
-      const res = response.data;
+  const handleFilter = (e) => {
+    const term = e.target.value;
+    setSearch(term);
 
-      const filtered = res.filter((restaurant) => {
-        const matchesName = restaurant.name
+    if (term) {
+      filteredRestaurants = filteredRestaurants.filter((restaurant) =>
+        restaurant.name
           .toLowerCase()
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
-          .includes(
-            search
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-          );
-        return matchesName;
-      });
-      console.log(filtered);
-
-      setRestaurants(filtered);
-    } catch (error) {
-      console.log("Error trying to find restaurants", error);
-      setError("Error al buscar restaurantes. Intenta de nuevo.");
-    } finally {
-      setLoading(false);
+          .includes(term)
+      );
     }
+    setRestaurants(filteredRestaurants);
   };
 
   return (
-    <form
-      onSubmit={filterRestaurants}
-      className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl mx-auto"
-    >
+    <form className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl mx-auto">
       <div className="relative w-full">
         <input
           className="w-full rounded-full px-5 py-3 pl-12 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none"
@@ -60,7 +40,7 @@ const SearchByName = ({ setRestaurants, allRestaurants }) => {
           name="search"
           placeholder="Buscar restaurantes..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleFilter}
         />
         <svg
           className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
