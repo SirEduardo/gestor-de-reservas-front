@@ -51,7 +51,7 @@ const Restaurants = () => {
               </h1>
               <div>
                 <img
-                  className="rounded-xl w-full h-auto"
+                  className="rounded-xl w-full h-auto max-w-7xl max-h-lvh "
                   src={restaurant.img}
                 ></img>
               </div>
