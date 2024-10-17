@@ -46,6 +46,8 @@ const Register = () => {
   if (isLogin) {
     return <Login />;
   }
+  const passwordErrorMessage =
+    "The password must include numbers, upper and lower case letters.";
 
   return (
     <div>
@@ -132,8 +134,7 @@ const Register = () => {
                 required: true,
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]+$/,
-                  message:
-                    "The password must include numbers, upper and lower case letters.",
+                  message: passwordErrorMessage,
                 },
               })}
               id="password"
@@ -144,9 +145,11 @@ const Register = () => {
               }`}
             />
             {errors.password && (
-              <span className="text-red-500 text-sm">
-                {errors.password.message}
-              </span>
+              <div className="mt-1 text-sm text-red-600 text-center">
+                <span>The password must include numbers,</span>
+                <br />
+                <span>upper and lower case letters.</span>
+              </div>
             )}
           </div>
           <div className="space-y-2">
