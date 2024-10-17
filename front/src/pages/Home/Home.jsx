@@ -53,6 +53,7 @@ const Home = () => {
               setRestaurants={setRestaurants}
               allRestaurants={allRestaurants}
               categories={categories}
+              setError={setError}
             />
             <SearchByCategory
               setRestaurants={setRestaurants}
@@ -67,30 +68,36 @@ const Home = () => {
           {!loading && error ? (
             <p className="text-center text-gray-600 text-xl">{error}</p>
           ) : (
-            restaurants.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {restaurants.map((res) => (
-                  <Link
-                    key={res._id}
-                    to={`/restaurants/${res._id}`}
-                    className="block"
-                  >
-                    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                      <Cards
-                        name={res.name}
-                        id={res._id}
-                        img={res.img || "default-image.jpg"}
-                        category={res.category}
-                        average_rating={res.average_rating}
-                        rating_number={res.rating_number}
-                        opening={res.opening}
-                        closing={res.closing}
-                      />
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )
+            <div>
+              {restaurants.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                  {restaurants.map((res) => (
+                    <Link
+                      key={res._id}
+                      to={`/restaurants/${res._id}`}
+                      className="block"
+                    >
+                      <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <Cards
+                          name={res.name}
+                          id={res._id}
+                          img={res.img || "default-image.jpg"}
+                          category={res.category}
+                          average_rating={res.average_rating}
+                          rating_number={res.rating_number}
+                          opening={res.opening}
+                          closing={res.closing}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-600 text-xl">
+                  No hay restaurantes disponibles.
+                </p>
+              )}
+            </div>
           )}
         </div>
       </main>
