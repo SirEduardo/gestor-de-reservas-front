@@ -42,12 +42,11 @@ const CreateReservation = () => {
     console.log("Reserva realizada con éxito:", response);
     navigate("/myReservations");
   };
+  const fetchRestaurant = async () => {
+    const response = await fetchData(`${API_URL}/restaurants/${id}`);
+    setRestaurant(response);
+  };
   useEffect(() => {
-    const fetchRestaurant = async () => {
-      const response = await fetchData(`${API_URL}/restaurants/${id}`);
-      setRestaurant(response);
-    };
-
     fetchRestaurant();
   }, [id]);
 
@@ -138,6 +137,9 @@ const CreateReservation = () => {
               />
               <ClockIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
+            <p>
+              Horario: {restaurant?.opening}-{restaurant?.closing}
+            </p>
             {errors.time && (
               <span className="mt-1 text-sm text-red-600">
                 {errors.time.message}
