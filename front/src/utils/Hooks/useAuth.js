@@ -30,7 +30,7 @@ const useAuth = () => {
           setError("Error. Porfavor, intentelo de nuevo");
         }
       } else if (error.request) {
-        setError("Network error. Please check your internet connection.");
+        setError("Network error. Revisa tu conexión a internet.");
       } else {
         setError("Error: " + error.message);
       }
