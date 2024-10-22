@@ -1,16 +1,11 @@
-const StoreUserData = (user, role, id, token) => {
-  if (user) {
-    localStorage.setItem("user", user);
+const StoreUserData = ({ user, role, id, token }) => {
+  const data = { user, role, id, token };
+  for (const [key, value] of Object.entries(data)) {
+    if (value) {
+      localStorage.setItem(key, value);
+    }
   }
-  if (role) {
-    localStorage.setItem("role", role);
-  }
-  if (id) {
-    localStorage.setItem("id", id);
-  }
-  if (token) {
-    localStorage.setItem("token", token);
-  } else {
+  if (!token) {
     alert("Authentication failed. User not found");
   }
 };
