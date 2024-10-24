@@ -1,31 +1,39 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Header } from "../../Header/Header";
 import Rate from "../../Rating/Rate";
 import { API_URL } from "../../../utils/Functions/api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../../../utils/Hooks/fetch";
 import Loading from "../../Loading/Loading";
+import { GlobalContext } from "../../../utils/Hooks/useReducer";
 
 const Comments = () => {
   const { id } = useParams();
+  const { state, dispatch } = useContext(GlobalContext);
+  const { loading, error } = state;
   const [input, setInput] = useState("");
   const [rating, setRating] = useState(0);
-  const [error, setError] = useState(null);
-  const { loading, postData } = useFetch();
+  const { postData } = useFetch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!input || rating === 0) {
-      setError("Por favor, proporciona un comentario y una calificación.");
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Por favor, proporciona un comentario y una calificación.",
+      });
       return;
     }
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
 
     if (!token) {
-      setError("Debes estar logeado para dejar un comentario");
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Debes estar logeado para dejar un comentario",
+      });
       return;
     }
     const commentData = {
