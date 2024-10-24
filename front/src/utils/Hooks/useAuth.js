@@ -1,13 +1,14 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext } from "react";
+import { GlobalContext } from "./useReducer";
 
 const useAuth = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { state, dispatch } = useContext(GlobalContext);
+  const { loading, error } = state;
 
   const authUser = async (url, formData) => {
-    setLoading(true);
-    setError(null);
+    dispatch({ type: "SET_LOADING", payload: true });
+    dispatch({ type: "SET_ERROR", payload: null });
 
     try {
       const response = await axios.post(url, formData, {
@@ -16,26 +17,38 @@ const useAuth = () => {
         },
       });
 
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
       return response.data;
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
-          setError("Usuario no encontrado.");
+          dispatch({ type: "SET_ERROR", payload: "Usuario no encontrado." });
         } else if (error.response.status === 400) {
-          setError(error.response.data || "Usuario o contraseña incorrectos.");
+          dispatch({
+            type: "SET_ERROR",
+            payload: error.response.data || "Usuario o contraseña incorrectos.",
+          });
         } else if (error.response.status === 409) {
-          setError("Este usuario ya existe");
+          dispatch({ type: "SET_ERROR", payload: "Este usuario ya existe" });
         } else {
-          setError("Error. Porfavor, intentelo de nuevo");
+          dispatch({
+            type: "SET_ERROR",
+            payload: "Error. Porfavor, intentelo de nuevo",
+          });
         }
       } else if (error.request) {
-        setError("Network error. Revisa tu conexión a internet.");
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Network error. Revisa tu conexión a internet.",
+        });
       } else {
-        setError("Error: " + error.message);
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Error: " + error.message,
+        });
       }
 
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
       return undefined;
     }
   };
