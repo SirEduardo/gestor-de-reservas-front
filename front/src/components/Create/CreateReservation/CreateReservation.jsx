@@ -5,13 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../../utils/Functions/api/api";
 import useFetch from "../../../utils/Hooks/fetch";
 import Loading from "../../Loading/Loading";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "../../../utils/Hooks/useReducer";
 
 const CreateReservation = () => {
   const { id } = useParams();
-  const { loading, fetchData, postData } = useFetch();
-  const [error, setError] = useState(null);
-  const [restaurant, setRestaurant] = useState(null);
+  const { state, dispatch } = useContext(GlobalContext);
+  const { loading, error, restaurant } = state;
+  const { fetchData, postData } = useFetch();
   const navigate = useNavigate();
   const {
     register,
@@ -23,7 +24,10 @@ const CreateReservation = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
     if (!token) {
-      setError("Debes estar logeado para hacer una reserva.");
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Debes estar logeado para hacer una reserva.",
+      });
       return;
     }
 
@@ -44,7 +48,7 @@ const CreateReservation = () => {
   };
   const fetchRestaurant = async () => {
     const response = await fetchData(`${API_URL}/restaurants/${id}`);
-    setRestaurant(response);
+    dispatch({ type: "SET_RESTAURANT", payload: response });
   };
   useEffect(() => {
     fetchRestaurant();
