@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { Header } from "../../components/Header/Header";
 import { Link } from "react-router-dom";
 import Cards from "../../components/Create/Cards/Cards";
@@ -7,32 +7,37 @@ import SearchByCategory from "../../components/Search/SearchByCategory";
 import { API_URL } from "../../utils/Functions/api/api";
 import Loading from "../../components/Loading/Loading";
 import useFetch from "../../utils/Hooks/fetch";
+import { GlobalContext } from "../../utils/Hooks/useReducer";
 
 const Home = () => {
-  const [restaurants, setRestaurants] = useState([]);
-  const [allRestaurants, setAllRestaurants] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const { loading, fetchData } = useFetch();
+  const { state, dispatch } = useContext(GlobalContext);
+  const { restaurants, allRestaurants, categories, error, loading } = state;
+  const { fetchData } = useFetch();
 
   const getRestaurants = useCallback(async () => {
+    dispatch({ type: "SET_LOADING", payload: true });
     try {
       const res = await fetchData(`${API_URL}/restaurants`);
       if (res && res.length > 0) {
         const sortedRestaurants = res.sort(
           (a, b) => b.average_rating - a.average_rating
         );
-
-        setRestaurants(sortedRestaurants);
-        setAllRestaurants(res);
+        dispatch({ type: "SET_RESTAURANTS", payload: sortedRestaurants });
+        dispatch({ type: "SET_ALL_RESTAURANTS", payload: res });
 
         const uniqueCategories = Array.from(
           new Set(res.map((restaurant) => restaurant.category))
         );
-        setCategories(uniqueCategories);
+        dispatch({ type: "SET_CATEGORIES", payload: uniqueCategories });
       }
-    } catch (err) {
-      setError("Error cargando restaurantes.", err);
+      dispatch({ type: "SET_LOADING", payload: false });
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Error cargando restaurantes.",
+        error,
+      });
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   }, [fetchData]);
 
@@ -50,13 +55,15 @@ const Home = () => {
           </h1>
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl">
             <SearchByName
-              setRestaurants={setRestaurants}
               allRestaurants={allRestaurants}
-              categories={categories}
-              setError={setError}
+              setError={(error) =>
+                dispatch({ type: "SET_ERROR", payload: error })
+              }
             />
             <SearchByCategory
-              setRestaurants={setRestaurants}
+              setRestaurants={(restaurants) =>
+                dispatch({ type: "SET_RESTAURANTS", payload: restaurants })
+              }
               restaurants={allRestaurants}
               categories={categories}
             />
