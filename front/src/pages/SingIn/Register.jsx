@@ -30,12 +30,12 @@ const Register = () => {
       if (registerRes) {
         console.log("Registration successful", registerRes);
         const loginResponse = await authUser(loginUrl, formData);
-        StoreUserData(
-          loginResponse.user.userName,
-          loginResponse.user.role,
-          loginResponse.user._id,
-          loginResponse.token
-        );
+        StoreUserData({
+          user: loginResponse.user.userName,
+          role: loginResponse.user.role,
+          id: loginResponse.user._id,
+          token: loginResponse.token,
+        });
         navigate("/");
       }
     } catch (error) {
