@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { GlobalContext } from "../../utils/Hooks/useReducer";
 
-const SearchByCategory = ({ setRestaurants, restaurants, categories }) => {
+const SearchByCategory = ({ restaurants, categories }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const { dispatch } = useContext(GlobalContext);
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
@@ -11,9 +13,9 @@ const SearchByCategory = ({ setRestaurants, restaurants, categories }) => {
       const filtered = restaurants.filter(
         (restaurant) => restaurant.category === category
       );
-      setRestaurants(filtered);
+      dispatch({ type: "SET_RESTAURANTS", payload: filtered });
     } else {
-      setRestaurants(restaurants);
+      dispatch({ type: "SET_RESTAURANTS", payload: restaurants });
     }
   };
   return (
