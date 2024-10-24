@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../../components/Rating/Rating";
 import { Header } from "../../components/Header/Header";
@@ -7,28 +7,30 @@ import { Star, MapPin, Phone, Clock } from "lucide-react";
 import { API_URL } from "../../utils/Functions/api/api";
 import Loading from "../../components/Loading/Loading";
 import useFetch from "../../utils/Hooks/fetch";
+import { GlobalContext } from "../../utils/Hooks/useReducer";
 
 const Restaurants = () => {
   const { id } = useParams();
-  const [restaurant, setRestaurant] = useState(null);
-  const [restaurants, setRestaurants] = useState([]);
-  const { loading, error, fetchData } = useFetch();
+  const { state, dispatch } = useContext(GlobalContext);
+  const { allRestaurants, restaurant, error, loading } = state;
+  const { fetchData } = useFetch();
 
   useEffect(() => {
     const fetchRestaurant = async () => {
+      dispatch({ type: "SET_LOADING", payload: true });
       const response = await fetchData(`${API_URL}/restaurants`);
-      const allRestaurants = response;
-
-      const foundRestaurant = allRestaurants.find((rest) => rest._id === id);
-
-      setRestaurants(allRestaurants);
-      setRestaurant(foundRestaurant);
+      if (response) {
+        dispatch({ type: "SET_ALL_RESTAURANTS", payload: response });
+        const foundRestaurant = response.find((rest) => rest._id === id);
+        dispatch({ type: "SET_RESTAURANT", payload: foundRestaurant });
+      }
+      dispatch({ type: "SET_LOADING", payload: false });
     };
     fetchRestaurant();
   }, []);
 
   const findIndex = () => {
-    const itemsSorted = [...restaurants].sort(
+    const itemsSorted = [...allRestaurants].sort(
       (a, b) => b.average_rating - a.average_rating
     );
     const indexRestaurant = itemsSorted.findIndex(
@@ -66,7 +68,7 @@ const Restaurants = () => {
                   />
                   <div className="flex gap-2">
                     <p className="font-bold">N.º {findIndex()} </p>
-                    <p>de {restaurants.length} restaurantes</p>
+                    <p>de {allRestaurants.length} restaurantes</p>
                   </div>
                 </div>
                 <div className="flex flex-col w-full bg-white p-6 rounded-lg border gap-3 shadow-md">
