@@ -23,13 +23,13 @@ const Login = () => {
     try {
       const res = await authUser(url, formData);
       if (res) {
-        console.log("Login successful", res.user.userName);
-        StoreUserData(
-          res.user.userName,
-          res.user.role,
-          res.user._id,
-          res.token
-        );
+        console.log("Login successfull", res.user.userName);
+        StoreUserData({
+          user: res.user.userName,
+          role: res.user.role,
+          id: res.user._id,
+          token: res.token,
+        });
         navigate("/");
       }
     } catch (error) {
