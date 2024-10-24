@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../../utils/Hooks/useReducer";
 
-const SearchByName = ({ setRestaurants, allRestaurants, setError }) => {
+const SearchByName = ({ allRestaurants, setError }) => {
+  const { dispatch } = useContext(GlobalContext);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (allRestaurants.length > 0) {
-      setRestaurants(allRestaurants);
+      dispatch({ type: "SET_RESTAURANTS", payload: allRestaurants });
     }
-  }, [allRestaurants, setRestaurants]);
+  }, [allRestaurants, dispatch]);
 
   const handleFilter = (e) => {
     const term = e.target.value.toLowerCase();
@@ -24,14 +26,14 @@ const SearchByName = ({ setRestaurants, allRestaurants, setError }) => {
 
       if (filteredRestaurants.length === 0) {
         const top3 = allRestaurants.slice(0, 3);
-        setRestaurants(top3);
+        dispatch({ type: "SET_RESTAURANTS", payload: top3 });
         setError("No se encontraron coincidencias, mostrando sugerencias.");
       } else {
-        setRestaurants(filteredRestaurants);
+        dispatch({ type: "SET_RESTAURANTS", payload: filteredRestaurants });
         setError(null);
       }
     } else {
-      setRestaurants(allRestaurants);
+      dispatch({ type: "SET_RESTAURANTS", payload: allRestaurants });
       setError(null);
     }
   };
