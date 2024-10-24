@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { API_URL } from "../../utils/Functions/api/api";
 import { Header } from "../../components/Header/Header";
 import ReservationCard from "../../components/Create/ReservationCard/ReservationCard";
 import Loading from "../../components/Loading/Loading";
 import useFetch from "../../utils/Hooks/fetch";
+import { GlobalContext } from "../../utils/Hooks/useReducer";
 
 const MyReservations = () => {
-  const [reservations, setReservations] = useState([]);
-  const { loading, error, fetchData } = useFetch();
+  const { state, dispatch } = useContext(GlobalContext);
+  const { reservations, loading, error } = state;
+  const { fetchData } = useFetch();
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -19,12 +21,12 @@ const MyReservations = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setReservations(response.reserve);
+      dispatch({ type: "SET_RESERVATIONS", payload: response.reserve });
     };
 
     fetchReservations();
     return () => {
-      setReservations([]);
+      dispatch({ type: "SET_RESERVATIONS", payload: [] });
     };
   }, []);
 
